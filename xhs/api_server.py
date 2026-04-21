@@ -925,6 +925,139 @@ def raw_spy(req: SpyReq) -> dict[str, Any]:
     return service.run_pw(_do)
 
 
+class UserPostedAllReq(BaseModel):
+    user_url_or_id: str
+    xsec_token: str | None = None
+    xsec_source: str = "pc_search"
+    max_pages: int = 50
+    save: bool = True
+
+
+@app.post("/api/v1/raw/user-posted-all")
+def raw_user_posted_all(req: UserPostedAllReq) -> dict[str, Any]:
+    """Open a profile page, scroll to bottom repeatedly, capture every user_posted XHR,
+    and aggregate notes until has_more is false (or max_pages reached)."""
+    from urllib.parse import urlparse, parse_qs
+    s = req.user_url_or_id.strip()
+    user_id = s
+    xsec_token = req.xsec_token
+    xsec_source = req.xsec_source
+    if s.startswith("http"):
+        try:
+            u = urlparse(s)
+            parts = [p for p in u.path.split("/") if p]
+            if "profile" in parts:
+                user_id = parts[parts.index("profile") + 1]
+            elif parts:
+                user_id = parts[-1]
+            q = parse_qs(u.query)
+            if not xsec_token and "xsec_token" in q: xsec_token = q["xsec_token"][0]
+            if "xsec_source" in q: xsec_source = q["xsec_source"][0]
+        except Exception as e:
+            return {"ok": False, "error": f"解析 URL 失败：{e}"}
+
+    profile_url = f"https://www.xiaohongshu.com/user/profile/{user_id}"
+    qparts = []
+    if xsec_token: qparts.append(f"xsec_token={xsec_token}")
+    qparts.append(f"xsec_source={xsec_source}")
+    profile_url += "?" + "&".join(qparts)
+
+    def _do():
+        import json as _json
+        with service.lock:
+            scraper = service.get_persistent_scraper()
+            scraper.start()
+            ctx = scraper.context
+            page = ctx.pages[0] if ctx.pages else ctx.new_page()
+            pages_seen: list[dict[str, Any]] = []
+            cursors_seen: set[str] = set()
+            def _on_response(response):
+                try:
+                    if "/api/sns/web/v1/user_posted" in response.url and response.request.method == "GET":
+                        body = ""
+                        try: body = response.text()
+                        except Exception: return
+                        try: j = _json.loads(body)
+                        except Exception: return
+                        cur = ((j or {}).get("data") or {}).get("cursor", "")
+                        # avoid double-counting same response
+                        sig = f"{response.url}|{cur}|{len((j.get('data') or {}).get('notes') or [])}"
+                        if sig in cursors_seen: return
+                        cursors_seen.add(sig)
+                        pages_seen.append(j)
+                except Exception:
+                    pass
+            page.on("response", _on_response)
+            try:
+                page.goto(profile_url, wait_until="domcontentloaded", timeout=30000)
+                # wait for first batch
+                for _ in range(20):
+                    if pages_seen: break
+                    page.wait_for_timeout(500)
+                last_count = -1
+                stable_rounds = 0
+                for round_i in range(req.max_pages):
+                    # check has_more on the most recent batch
+                    if pages_seen:
+                        last = pages_seen[-1]
+                        has_more = ((last or {}).get("data") or {}).get("has_more", True)
+                        if not has_more:
+                            break
+                    try:
+                        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                    except Exception:
+                        pass
+                    # wait for another batch to arrive
+                    waited = 0
+                    cur_count = len(pages_seen)
+                    while waited < 6000:
+                        page.wait_for_timeout(500); waited += 500
+                        if len(pages_seen) > cur_count: break
+                    # if no progress for 2 rounds in a row, stop
+                    if len(pages_seen) == last_count:
+                        stable_rounds += 1
+                        if stable_rounds >= 2: break
+                    else:
+                        stable_rounds = 0
+                        last_count = len(pages_seen)
+            finally:
+                try: page.remove_listener("response", _on_response)
+                except Exception: pass
+
+            if not pages_seen:
+                return {"ok": False, "error": "未捕获到任何 user_posted 响应", "page_url": page.url}
+            all_notes: list[dict[str, Any]] = []
+            seen_ids: set[str] = set()
+            for j in pages_seen:
+                for n in (((j or {}).get("data") or {}).get("notes") or []):
+                    nid = n.get("note_id") or n.get("id")
+                    if nid and nid in seen_ids: continue
+                    if nid: seen_ids.add(nid)
+                    all_notes.append(n)
+            last = pages_seen[-1]
+            result = {
+                "ok": True,
+                "user_id": user_id,
+                "pages": len(pages_seen),
+                "total_notes": len(all_notes),
+                "has_more": ((last or {}).get("data") or {}).get("has_more", False),
+                "last_cursor": ((last or {}).get("data") or {}).get("cursor", ""),
+                "notes": all_notes,
+                "page_url": page.url,
+            }
+            if req.save:
+                from pathlib import Path as _P
+                from datetime import datetime as _dt
+                outdir = _P(__file__).resolve().parent / "outputs"
+                outdir.mkdir(parents=True, exist_ok=True)
+                ts = _dt.now().strftime("%Y%m%d_%H%M%S")
+                fp = outdir / f"user_posted_{user_id}_{ts}.json"
+                fp.write_text(_json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+                result["saved_to"] = str(fp)
+            return result
+    return service.run_pw(_do)
+
+
 class RawEvalReq(BaseModel):
     code: str
 
