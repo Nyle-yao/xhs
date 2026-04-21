@@ -1080,6 +1080,7 @@ class UserPostedAllReq(BaseModel):
     xsec_token: str | None = None
     xsec_source: str = "pc_search"
     max_pages: int = 50
+    max_notes: int = 0  # 0 = no cap; otherwise stop once this many unique notes captured
     save: bool = True
 
 
@@ -1147,12 +1148,23 @@ def raw_user_posted_all(req: UserPostedAllReq) -> dict[str, Any]:
                 import random as _rnd
                 last_count = -1
                 stable_rounds = 0
+                def _unique_count() -> int:
+                    seen, c = set(), 0
+                    for j in pages_seen:
+                        for n in (((j or {}).get("data") or {}).get("notes") or []):
+                            nid = n.get("note_id") or n.get("id")
+                            if nid and nid in seen: continue
+                            if nid: seen.add(nid)
+                            c += 1
+                    return c
                 for round_i in range(req.max_pages):
                     if pages_seen:
                         last = pages_seen[-1]
                         has_more = ((last or {}).get("data") or {}).get("has_more", True)
                         if not has_more:
                             break
+                    if req.max_notes and _unique_count() >= req.max_notes:
+                        break
                     # Human-like throttle BEFORE next scroll: read for 4-9s
                     page.wait_for_timeout(_rnd.randint(4000, 9000))
                     # Progressive scroll in 2-4 steps with small pauses, like a real reader
@@ -1197,6 +1209,8 @@ def raw_user_posted_all(req: UserPostedAllReq) -> dict[str, Any]:
                     if nid and nid in seen_ids: continue
                     if nid: seen_ids.add(nid)
                     all_notes.append(n)
+            if req.max_notes and len(all_notes) > req.max_notes:
+                all_notes = all_notes[: req.max_notes]
             last = pages_seen[-1]
             result = {
                 "ok": True,
