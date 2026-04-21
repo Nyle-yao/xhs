@@ -57,6 +57,19 @@ class XHSScraper:
         )
         if _exec_path:
             _launch_kwargs["executable_path"] = _exec_path
+        _proxy_server = _os.environ.get("XHS_PROXY_SERVER")
+        if _proxy_server:
+            if "://" not in _proxy_server:
+                _proxy_server = "http://" + _proxy_server
+            _proxy_cfg = {"server": _proxy_server}
+            _pu = _os.environ.get("XHS_PROXY_USER")
+            _pp = _os.environ.get("XHS_PROXY_PASS")
+            if _pu:
+                _proxy_cfg["username"] = _pu
+            if _pp:
+                _proxy_cfg["password"] = _pp
+            _launch_kwargs["proxy"] = _proxy_cfg
+            print(f"[scraper] using proxy {_proxy_server} (user={_pu or '-'})", flush=True)
         self.context = self._pw.chromium.launch_persistent_context(**_launch_kwargs)
 
     def close(self) -> None:
