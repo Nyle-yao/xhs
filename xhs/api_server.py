@@ -5,6 +5,7 @@ import os
 import re
 import time
 import threading
+import concurrent.futures
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Literal
@@ -153,6 +154,14 @@ class APIService:
         self.last_analysis_xlsx: str | None = None
         self.progress: dict[str, Any] = self._initial_progress()
         self.login_scraper: XHSScraper | None = None
+        # Playwright sync API binds to its starting thread/greenlet; serialize
+        # all calls touching the persistent browser onto a single worker thread.
+        self.pw_executor = concurrent.futures.ThreadPoolExecutor(
+            max_workers=1, thread_name_prefix="xhs-pw"
+        )
+
+    def run_pw(self, fn, *args, **kwargs):
+        return self.pw_executor.submit(fn, *args, **kwargs).result()
 
     def _initial_progress(self) -> dict[str, Any]:
         return {
@@ -249,12 +258,14 @@ class APIService:
 
     def login_check_visible(self, timeout_sec: int) -> ScrapeResult:
         """Open one visible login browser and keep it alive for the next crawl."""
-        with self.lock:
-            scraper = self.get_persistent_scraper()
-            try:
-                return scraper.ensure_login(timeout_sec=timeout_sec, keep_open=True)
-            except Exception as e:
-                return ScrapeResult(ok=False, message=f"登录检测失败: {e}")
+        def _do():
+            with self.lock:
+                scraper = self.get_persistent_scraper()
+                try:
+                    return scraper.ensure_login(timeout_sec=timeout_sec, keep_open=True)
+                except Exception as e:
+                    return ScrapeResult(ok=False, message=f"登录检测失败: {e}")
+        return self.run_pw(_do)
 
 
 service = APIService()
@@ -716,7 +727,7 @@ def login_check(req: LoginCheckReq) -> dict[str, Any]:
 @app.post("/api/v1/auth/login/open")
 def login_open() -> dict[str, Any]:
     """Start persistent browser and navigate to the QR login page (non-blocking)."""
-    try:
+    def _do():
         with service.lock:
             scraper = service.get_persistent_scraper()
             scraper.start()
@@ -735,6 +746,8 @@ def login_open() -> dict[str, Any]:
             except Exception:
                 pass
         return {"ok": True, "message": "已打开登录页，请等待二维码加载"}
+    try:
+        return service.run_pw(_do)
     except Exception as e:
         return {"ok": False, "message": f"打开登录页失败: {e}"}
 
@@ -743,13 +756,15 @@ def login_open() -> dict[str, Any]:
 def login_qr():
     """Return a PNG screenshot of the current persistent browser page (the login page)."""
     from fastapi.responses import Response
-    try:
+    def _do():
         scraper = service.get_persistent_scraper()
         if scraper.context is None:
             scraper.start()
         ctx = scraper.context
         page = ctx.pages[0] if ctx.pages else ctx.new_page()
-        png = page.screenshot(type="png", full_page=False)
+        return page.screenshot(type="png", full_page=False)
+    try:
+        png = service.run_pw(_do)
         return Response(content=png, media_type="image/png", headers={"Cache-Control": "no-store"})
     except Exception as e:
         return Response(content=str(e).encode("utf-8"), media_type="text/plain", status_code=500)
@@ -757,10 +772,12 @@ def login_qr():
 
 @app.get("/api/v1/auth/login/debug")
 def login_debug() -> dict[str, Any]:
-    with service.lock:
-        scraper = service.login_scraper or XHSScraper(profile_dir=service.profile_dir, headless=service.headless)
-        service.login_scraper = scraper
-        res = scraper.login_debug_snapshot()
+    def _do():
+        with service.lock:
+            scraper = service.login_scraper or XHSScraper(profile_dir=service.profile_dir, headless=service.headless)
+            service.login_scraper = scraper
+            return scraper.login_debug_snapshot()
+    res = service.run_pw(_do)
     return {"ok": res.ok, "message": res.message, "data": res.data}
 
 
