@@ -133,6 +133,18 @@
             <button class="light" onclick="clearCookies()">清空当前 Cookie</button>
           </div>
         </div>
+        <div style="margin-top:12px;border:1px solid #ddd;padding:10px;border-radius:6px;background:#eef7ff">
+          <div style="margin-bottom:6px"><strong>直连小红书 Web API（推荐方式，比浏览器爬稳定）</strong></div>
+          <div class="muted" style="font-size:12px;margin-bottom:6px">
+            通用接口直调：在已登录的浏览器上下文里发起 <code>fetch</code>，让小红书自家 JS 自动加 <code>x-s</code>/<code>x-t</code> 签名。粘贴任意 <code>https://edith.xiaohongshu.com/...</code> 链接即可。
+          </div>
+          <textarea id="rawUrl" rows="3" style="width:100%;font-family:monospace;font-size:12px" placeholder="https://edith.xiaohongshu.com/api/sns/web/v1/user_posted?num=30&cursor=&user_id=...&xsec_token=...&xsec_source=pc_search"></textarea>
+          <div class="actions" style="margin-top:6px">
+            <button class="secondary" onclick="rawFetch()">直接调用接口</button>
+            <button class="light" onclick="downloadRawJson()">下载结果 JSON</button>
+          </div>
+          <pre id="rawResult" style="max-height:240px;overflow:auto;background:#fff;border:1px solid #eee;padding:6px;font-size:11px;margin-top:6px"></pre>
+        </div>
         <div id="qrBox" style="margin-top:12px;display:none;border:1px solid #ddd;padding:8px;border-radius:6px;background:#fafafa">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
             <strong>登录页快照（每 4 秒刷新）</strong>
@@ -301,6 +313,32 @@ async function importCookies() {
       + '\n当前地址：' + (d.url || '')
       + '\nCookie 名称：' + ((d.cookie_names || []).join(', ')));
   } catch(e) { setStatus('Cookie 登录失败：' + e.message); }
+}
+let lastRawJson = null;
+async function rawFetch() {
+  const url = (document.getElementById('rawUrl').value || '').trim();
+  if (!url) { setStatus('请先粘贴接口 URL'); return; }
+  document.getElementById('rawResult').textContent = '请求中...';
+  setStatus('正在通过浏览器上下文直调小红书接口...');
+  try {
+    const r = await fetch(API + '/api/v1/raw/fetch', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({url, method:'GET'})
+    });
+    const j = await r.json();
+    lastRawJson = j;
+    const preview = j.json ? JSON.stringify(j.json, null, 2) : (j.text || j.error || JSON.stringify(j));
+    document.getElementById('rawResult').textContent = `HTTP ${j.status||0}  page=${j.page_url||''}\n` + (preview.length > 8000 ? preview.slice(0,8000)+'\n...[已截断]' : preview);
+    setStatus(j.ok ? '✅ 接口直调成功 (HTTP ' + j.status + ')' : '⚠️ 接口直调返回 HTTP ' + (j.status||0) + ' / error=' + (j.error||''));
+  } catch(e) { setStatus('直调失败：' + e.message); document.getElementById('rawResult').textContent = e.message; }
+}
+function downloadRawJson() {
+  if (!lastRawJson) { setStatus('还没有结果可下载，先点"直接调用接口"'); return; }
+  const blob = new Blob([JSON.stringify(lastRawJson, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'xhs_raw_' + Date.now() + '.json'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
 }
 async function clearCookies() {
   try {

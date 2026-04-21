@@ -880,6 +880,159 @@ def cookies_import(req: CookieImportReq) -> dict[str, Any]:
         return {"ok": False, "message": f"cookie 登录失败：{e}"}
 
 
+class RawEvalReq(BaseModel):
+    code: str
+
+
+@app.post("/api/v1/raw/eval")
+def raw_eval(req: RawEvalReq) -> dict[str, Any]:
+    def _do():
+        with service.lock:
+            scraper = service.get_persistent_scraper()
+            scraper.start()
+            ctx = scraper.context
+            page = ctx.pages[0] if ctx.pages else ctx.new_page()
+            try:
+                if "xiaohongshu.com" not in (page.url or "") or "website-login/error" in (page.url or ""):
+                    page.goto("https://www.xiaohongshu.com/explore", wait_until="domcontentloaded", timeout=30000)
+                    page.wait_for_timeout(1500)
+            except Exception:
+                pass
+            try:
+                return {"ok": True, "result": page.evaluate(req.code), "page_url": page.url}
+            except Exception as e:
+                return {"ok": False, "error": str(e), "page_url": page.url}
+    return service.run_pw(_do)
+
+
+class RawFetchReq(BaseModel):
+    url: str
+    method: str = "GET"
+    body: str | None = None
+    headers: dict[str, str] | None = None
+
+
+@app.post("/api/v1/raw/fetch")
+def raw_fetch(req: RawFetchReq) -> dict[str, Any]:
+    """Run fetch() inside the persistent xiaohongshu.com page so its JS auto-signs (x-s/x-t)."""
+    def _do():
+        with service.lock:
+            scraper = service.get_persistent_scraper()
+            scraper.start()
+            ctx = scraper.context
+            page = ctx.pages[0] if ctx.pages else ctx.new_page()
+            try:
+                cur = page.url or ""
+                if "xiaohongshu.com" not in cur or "website-login/error" in cur:
+                    page.goto("https://www.xiaohongshu.com/explore", wait_until="domcontentloaded", timeout=30000)
+                    page.wait_for_timeout(1200)
+            except Exception:
+                pass
+            result = page.evaluate(
+                """
+                ({url, method, body, headers}) => new Promise((resolve) => {
+                  try {
+                    const m = (method || 'GET').toUpperCase();
+                    // Compute path+query relative to edith host so the sign matches
+                    let signPath = url;
+                    try {
+                      const u = new URL(url, location.origin);
+                      signPath = u.pathname + (u.search || '');
+                    } catch(_) {}
+                    let payload;
+                    if (m === 'GET') payload = undefined;
+                    else { try { payload = body ? JSON.parse(body) : {}; } catch(_) { payload = body || ''; } }
+
+                    let sign = null, signErr = null;
+                    try {
+                      if (typeof window._webmsxyw === 'function') {
+                        sign = window._webmsxyw(signPath, payload);
+                      } else { signErr = 'no _webmsxyw'; }
+                    } catch (e) { signErr = String(e); }
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.open(m, url, true);
+                    xhr.withCredentials = true;
+                    if (m !== 'GET' && body && !(headers||{})['Content-Type']) {
+                      xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                    }
+                    if (sign) {
+                      try { xhr.setRequestHeader('X-s', sign['X-s'] || sign.xs || ''); } catch(_) {}
+                      try { xhr.setRequestHeader('X-t', String(sign['X-t'] || sign.xt || '')); } catch(_) {}
+                      if (sign['X-S-Common']) { try { xhr.setRequestHeader('X-S-Common', sign['X-S-Common']); } catch(_) {} }
+                      if (sign['X-B3-Traceid']) { try { xhr.setRequestHeader('X-B3-Traceid', sign['X-B3-Traceid']); } catch(_) {} }
+                    }
+                    Object.entries(headers || {}).forEach(([k, v]) => {
+                      try { xhr.setRequestHeader(k, v); } catch(_) {}
+                    });
+                    xhr.onload = () => {
+                      const text = xhr.responseText || '';
+                      let json = null; try { json = text ? JSON.parse(text) : null; } catch(_) {}
+                      resolve({ status: xhr.status, json, text: json ? null : text, error: null, page_url: location.href, sign_err: signErr, signed: !!sign });
+                    };
+                    xhr.onerror = () => resolve({ status: xhr.status || 0, json: null, text: xhr.responseText || '', error: 'XHR network error', page_url: location.href, sign_err: signErr });
+                    xhr.ontimeout = () => resolve({ status: 0, json: null, text: '', error: 'XHR timeout', page_url: location.href, sign_err: signErr });
+                    xhr.timeout = 25000;
+                    xhr.send(m === 'GET' ? null : (body || null));
+                  } catch (e) {
+                    resolve({ status: 0, json: null, text: '', error: String(e), page_url: location.href });
+                  }
+                })
+                """,
+                {"url": req.url, "method": req.method, "body": req.body, "headers": req.headers or {}},
+            )
+            return {"ok": bool(result.get("status") and 200 <= result["status"] < 400 and not result.get("error")), **result}
+    try:
+        return service.run_pw(_do)
+    except Exception as e:
+        return {"ok": False, "error": f"raw_fetch 失败：{e}"}
+
+
+class UserPostedReq(BaseModel):
+    user_url_or_id: str
+    cursor: str = ""
+    num: int = 30
+    xsec_token: str | None = None
+    xsec_source: str = "pc_search"
+    image_formats: str = "jpg,webp,avif"
+
+
+@app.post("/api/v1/raw/user-posted")
+def raw_user_posted(req: UserPostedReq) -> dict[str, Any]:
+    """Convenience wrapper around /api/sns/web/v1/user_posted."""
+    from urllib.parse import urlparse, parse_qs, urlencode
+    s = req.user_url_or_id.strip()
+    user_id = s
+    xsec_token = req.xsec_token
+    xsec_source = req.xsec_source
+    if s.startswith("http"):
+        try:
+            u = urlparse(s)
+            parts = [p for p in u.path.split("/") if p]
+            if "profile" in parts:
+                user_id = parts[parts.index("profile") + 1]
+            elif parts:
+                user_id = parts[-1]
+            q = parse_qs(u.query)
+            if not xsec_token and "xsec_token" in q:
+                xsec_token = q["xsec_token"][0]
+            if "xsec_source" in q:
+                xsec_source = q["xsec_source"][0]
+        except Exception as e:
+            return {"ok": False, "error": f"解析 URL 失败：{e}"}
+    qs = {
+        "num": req.num,
+        "cursor": req.cursor or "",
+        "user_id": user_id,
+        "image_formats": req.image_formats,
+        "xsec_source": xsec_source,
+    }
+    if xsec_token:
+        qs["xsec_token"] = xsec_token
+    url = "https://edith.xiaohongshu.com/api/sns/web/v1/user_posted?" + urlencode(qs)
+    return raw_fetch(RawFetchReq(url=url, method="GET"))
+
+
 @app.post("/api/v1/auth/cookies/clear")
 def cookies_clear() -> dict[str, Any]:
     def _do():
