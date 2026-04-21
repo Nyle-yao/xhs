@@ -1071,6 +1071,221 @@ def raw_user_posted_all(req: UserPostedAllReq) -> dict[str, Any]:
     return service.run_pw(_do)
 
 
+class CommentsReq(BaseModel):
+    note_id: str
+    xsec_token: str
+    xsec_source: str = "pc_user"
+    max_comments: int = 20
+    max_pages: int = 10
+    save: bool = True
+
+
+@app.post("/api/v1/raw/comments")
+def raw_comments(req: CommentsReq) -> dict[str, Any]:
+    """Open a note's explore page, capture comment/page XHRs, scroll the
+    comments panel until we have >= max_comments root-level comments."""
+    note_id = req.note_id.strip()
+    note_url = (
+        f"https://www.xiaohongshu.com/explore/{note_id}"
+        f"?xsec_token={req.xsec_token}&xsec_source={req.xsec_source}"
+    )
+
+    def _do():
+        import json as _json, random as _rnd
+        with service.lock:
+            scraper = service.get_persistent_scraper()
+            scraper.start()
+            ctx = scraper.context
+            page = ctx.pages[0] if ctx.pages else ctx.new_page()
+            pages_seen: list[dict[str, Any]] = []
+            sigs: set[str] = set()
+
+            def _on_response(response):
+                try:
+                    if "/api/sns/web/v2/comment/page" not in response.url:
+                        return
+                    if response.request.method != "GET":
+                        return
+                    try:
+                        body = response.text()
+                    except Exception:
+                        return
+                    try:
+                        j = _json.loads(body)
+                    except Exception:
+                        return
+                    data = (j or {}).get("data") or {}
+                    cur = data.get("cursor", "")
+                    n = len(data.get("comments") or [])
+                    sig = f"{cur}|{n}"
+                    if sig in sigs:
+                        return
+                    sigs.add(sig)
+                    pages_seen.append(j)
+                except Exception:
+                    pass
+
+            page.on("response", _on_response)
+            try:
+                page.goto(note_url, wait_until="domcontentloaded", timeout=30000)
+                # wait for first comments batch
+                for _ in range(30):
+                    if pages_seen:
+                        break
+                    page.wait_for_timeout(500)
+
+                def _root_count() -> int:
+                    seen, c = set(), 0
+                    for j in pages_seen:
+                        for cm in ((j or {}).get("data") or {}).get("comments") or []:
+                            cid = cm.get("id")
+                            if cid and cid in seen:
+                                continue
+                            if cid:
+                                seen.add(cid)
+                            c += 1
+                    return c
+
+                stable = 0
+                for _round in range(req.max_pages):
+                    if _root_count() >= req.max_comments:
+                        break
+                    last = pages_seen[-1] if pages_seen else None
+                    if last and not (((last or {}).get("data") or {}).get("has_more", True)):
+                        break
+                    page.wait_for_timeout(_rnd.randint(2000, 4500))
+                    try:
+                        # Push the page itself down a little
+                        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                        page.wait_for_timeout(300)
+                        # Try scrolling the inner comment containers (xhs uses an internal
+                        # scrollable list for comments). Find the deepest scrollable child
+                        # and scroll it to the bottom.
+                        page.evaluate(
+                            """
+                            (() => {
+                              const all = Array.from(document.querySelectorAll('*'));
+                              const scrollables = all.filter(e => {
+                                const s = getComputedStyle(e);
+                                return (s.overflowY === 'auto' || s.overflowY === 'scroll')
+                                    && e.scrollHeight > e.clientHeight + 20;
+                              });
+                              for (const el of scrollables) { el.scrollTop = el.scrollHeight; }
+                            })();
+                            """
+                        )
+                        page.wait_for_timeout(400)
+                        # Press End / PageDown a few times — xhs comment list responds to keys
+                        for _k in range(_rnd.randint(2, 4)):
+                            try: page.keyboard.press("End")
+                            except Exception: pass
+                            page.wait_for_timeout(_rnd.randint(250, 600))
+                            try: page.keyboard.press("PageDown")
+                            except Exception: pass
+                            page.wait_for_timeout(_rnd.randint(250, 600))
+                        # Mouse wheel as a fallback
+                        try:
+                            box = page.viewport_size or {"width": 1280, "height": 720}
+                            page.mouse.move(box["width"] // 2, box["height"] - 100)
+                            for _w in range(5):
+                                page.mouse.wheel(0, _rnd.randint(800, 1400))
+                                page.wait_for_timeout(_rnd.randint(150, 400))
+                        except Exception:
+                            pass
+                    except Exception:
+                        pass
+                    cur_n = len(pages_seen)
+                    waited = 0
+                    while waited < 8000:
+                        page.wait_for_timeout(500); waited += 500
+                        if len(pages_seen) > cur_n:
+                            break
+                    if len(pages_seen) == cur_n:
+                        stable += 1
+                        if stable >= 2:
+                            break
+                    else:
+                        stable = 0
+            finally:
+                try: page.remove_listener("response", _on_response)
+                except Exception: pass
+
+            if not pages_seen:
+                return {"ok": False, "error": "未捕获到任何 comment/page 响应", "page_url": page.url}
+
+            # Aggregate + project
+            all_comments: list[dict[str, Any]] = []
+            seen_ids: set[str] = set()
+            for j in pages_seen:
+                for cm in ((j or {}).get("data") or {}).get("comments") or []:
+                    cid = cm.get("id")
+                    if cid and cid in seen_ids:
+                        continue
+                    if cid:
+                        seen_ids.add(cid)
+                    all_comments.append(cm)
+
+            def _pic_urls(pics):
+                out = []
+                for p in (pics or []):
+                    out.append({
+                        "url_default": p.get("url_default"),
+                        "url_pre": p.get("url_pre"),
+                        "width": p.get("width"),
+                        "height": p.get("height"),
+                    })
+                return out
+
+            def _project(cm: dict) -> dict:
+                ui = cm.get("user_info") or {}
+                return {
+                    "id": cm.get("id"),
+                    "note_id": cm.get("note_id"),
+                    "content": cm.get("content"),
+                    "create_time": cm.get("create_time"),
+                    "ip_location": cm.get("ip_location"),
+                    "like_count": cm.get("like_count"),
+                    "liked": cm.get("liked"),
+                    "show_tags": cm.get("show_tags"),
+                    "user": {
+                        "user_id": ui.get("user_id"),
+                        "nickname": ui.get("nickname"),
+                        "image": ui.get("image"),
+                        "xsec_token": ui.get("xsec_token"),
+                    },
+                    "pictures": _pic_urls(cm.get("pictures")),
+                    "sub_comment_count": cm.get("sub_comment_count"),
+                    "sub_comment_has_more": cm.get("sub_comment_has_more"),
+                    "sub_comments": [_project(s) for s in (cm.get("sub_comments") or [])],
+                }
+
+            trimmed = all_comments[: req.max_comments]
+            projected = [_project(cm) for cm in trimmed]
+            last = pages_seen[-1]
+            result = {
+                "ok": True,
+                "note_id": note_id,
+                "captured_pages": len(pages_seen),
+                "captured_root_comments": len(all_comments),
+                "returned": len(projected),
+                "has_more": ((last or {}).get("data") or {}).get("has_more", False),
+                "last_cursor": ((last or {}).get("data") or {}).get("cursor", ""),
+                "comments": projected,
+                "page_url": page.url,
+            }
+            if req.save:
+                from pathlib import Path as _P
+                from datetime import datetime as _dt
+                outdir = _P(__file__).resolve().parent / "outputs"
+                outdir.mkdir(parents=True, exist_ok=True)
+                ts = _dt.now().strftime("%Y%m%d_%H%M%S")
+                fp = outdir / f"comments_{note_id}_{ts}.json"
+                fp.write_text(_json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+                result["saved_to"] = str(fp)
+            return result
+    return service.run_pw(_do)
+
+
 class RawEvalReq(BaseModel):
     code: str
 
