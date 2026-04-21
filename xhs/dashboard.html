@@ -686,11 +686,16 @@ async function v2Refresh(){
           const kind = ({user_posts:'📋全部笔记', comments:'💬评论', note:'📝笔记详情', notes_top5:'⭐前5'}[f.kind]) || f.kind;
           const sz = f.size>1024 ? (f.size/1024).toFixed(1)+'KB' : f.size+'B';
           const url = API + '/api/v1/outputs/' + encodeURIComponent(f.name);
+          const viewUrl = API + '/api/v1/view/' + encodeURIComponent(f.name);
           return `<tr style="border-top:1px solid #eee">
             <td style="padding:4px">${kind}</td>
             <td style="padding:4px;font-family:monospace;font-size:11px">${v2Esc(f.name)}</td>
             <td style="padding:4px;text-align:right">${sz}</td>
-            <td style="padding:4px"><a href="${url}" target="_blank">查看</a> · <a href="${url}" download>下载</a></td>
+            <td style="padding:4px">
+              <a href="${viewUrl}" target="_blank" style="color:#16a34a;font-weight:600">🎨 可视化</a> ·
+              <a href="${url}" target="_blank">JSON</a> ·
+              <a href="${url}" download>下载</a>
+            </td>
           </tr>`;
         }).join('') + '</tbody></table></div>';
   } catch(e){ document.getElementById('v2Files').textContent='加载失败：'+e; }

@@ -484,6 +484,29 @@ def get_output(name: str):
     return FileResponse(str(fp), media_type="application/json", filename=name)
 
 
+@app.get("/api/v1/view/{name}")
+def view_output(name: str):
+    """Render saved JSON as a styled, self-contained HTML page."""
+    from pathlib import Path as _P
+    from fastapi.responses import HTMLResponse
+    from fastapi import HTTPException
+    if "/" in name or ".." in name:
+        raise HTTPException(status_code=400, detail="invalid name")
+    outdir = _P(__file__).resolve().parent / "outputs"
+    fp = outdir / name
+    if not fp.exists() or not fp.is_file():
+        raise HTTPException(status_code=404, detail="not found")
+    try:
+        from . import viewer  # type: ignore
+    except Exception:
+        import importlib.util as _u, sys as _s
+        spec = _u.spec_from_file_location("xhs_viewer", _P(__file__).parent / "viewer.py")
+        viewer = _u.module_from_spec(spec); _s.modules["xhs_viewer"] = viewer
+        spec.loader.exec_module(viewer)  # type: ignore
+    html_body = viewer.render(name, fp)
+    return HTMLResponse(html_body)
+
+
 @app.get("/api/v1/health")
 def health() -> dict[str, Any]:
     return {
