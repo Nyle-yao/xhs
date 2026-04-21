@@ -1071,6 +1071,108 @@ def raw_user_posted_all(req: UserPostedAllReq) -> dict[str, Any]:
     return service.run_pw(_do)
 
 
+class NoteDetailReq(BaseModel):
+    note_id: str
+    xsec_token: str
+    xsec_source: str = "pc_user"
+    save: bool = False
+
+
+@app.post("/api/v1/raw/note-detail")
+def raw_note_detail(req: NoteDetailReq) -> dict[str, Any]:
+    """Open a note's explore page and capture the page's own POST /feed response."""
+    note_id = req.note_id.strip()
+    note_url = (
+        f"https://www.xiaohongshu.com/explore/{note_id}"
+        f"?xsec_token={req.xsec_token}&xsec_source={req.xsec_source}"
+    )
+
+    def _do():
+        import json as _json
+        with service.lock:
+            scraper = service.get_persistent_scraper()
+            scraper.start()
+            ctx = scraper.context
+            page = ctx.pages[0] if ctx.pages else ctx.new_page()
+            try:
+                page.goto(note_url, wait_until="domcontentloaded", timeout=30000)
+            except Exception:
+                pass
+            page.wait_for_timeout(800)
+            # Pull the SSR-embedded note from window.__INITIAL_STATE__
+            note_data = page.evaluate(
+                """(nid) => {
+                    const w = window.__INITIAL_STATE__ || {};
+                    const map = (w.note || {}).noteDetailMap || {};
+                    const entry = map[nid] || map[Object.keys(map)[0]] || {};
+                    return entry.note || null;
+                }""",
+                note_id,
+            )
+            if not note_data:
+                return {"ok": False, "error": "页面未渲染笔记数据 (__INITIAL_STATE__ 缺失)", "page_url": page.url}
+            user = note_data.get("user") or {}
+            ii = note_data.get("interactInfo") or {}
+            def _imgs(lst):
+                out = []
+                for im in (lst or []):
+                    out.append({
+                        "url_default": im.get("urlDefault") or im.get("url_default"),
+                        "url_pre": im.get("urlPre") or im.get("url_pre"),
+                        "width": im.get("width"),
+                        "height": im.get("height"),
+                        "live_photo": im.get("livePhoto") or im.get("live_photo"),
+                    })
+                return out
+            video = note_data.get("video") or {}
+            video_urls = []
+            try:
+                streams = ((video.get("media") or {}).get("stream") or {})
+                for k, arr in streams.items():
+                    for s in (arr or []):
+                        u = s.get("masterUrl") or s.get("master_url") or (s.get("backupUrls") or s.get("backup_urls") or [None])[0]
+                        if u: video_urls.append({"quality": k, "url": u})
+            except Exception:
+                pass
+            result = {
+                "ok": True,
+                "note_id": note_data.get("noteId") or note_id,
+                "type": note_data.get("type"),
+                "title": note_data.get("title"),
+                "desc": note_data.get("desc"),
+                "time": note_data.get("time"),
+                "last_update_time": note_data.get("lastUpdateTime"),
+                "ip_location": note_data.get("ipLocation"),
+                "user": {
+                    "user_id": user.get("userId") or user.get("user_id"),
+                    "nickname": user.get("nickname"),
+                    "avatar": user.get("avatar"),
+                    "xsec_token": user.get("xsecToken") or user.get("xsec_token"),
+                },
+                "interact": {
+                    "liked_count": ii.get("likedCount") or ii.get("liked_count"),
+                    "collected_count": ii.get("collectedCount") or ii.get("collected_count"),
+                    "comment_count": ii.get("commentCount") or ii.get("comment_count"),
+                    "share_count": ii.get("shareCount") or ii.get("share_count"),
+                },
+                "image_list": _imgs(note_data.get("imageList") or note_data.get("image_list")),
+                "video_urls": video_urls,
+                "tag_list": note_data.get("tagList") or note_data.get("tag_list") or [],
+                "at_user_list": note_data.get("atUserList") or note_data.get("at_user_list") or [],
+            }
+            if req.save:
+                from pathlib import Path as _P
+                from datetime import datetime as _dt
+                outdir = _P(__file__).resolve().parent / "outputs"
+                outdir.mkdir(parents=True, exist_ok=True)
+                ts = _dt.now().strftime("%Y%m%d_%H%M%S")
+                fp = outdir / f"note_{note_id}_{ts}.json"
+                fp.write_text(_json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+                result["saved_to"] = str(fp)
+            return result
+    return service.run_pw(_do)
+
+
 class CommentsReq(BaseModel):
     note_id: str
     xsec_token: str
