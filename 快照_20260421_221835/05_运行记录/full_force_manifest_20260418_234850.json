@@ -1,0 +1,39 @@
+{
+  "run_id": "20260418_234850",
+  "started_at": "2026-04-18 23:48:50",
+  "status": "RUNNING",
+  "steps": [
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 1,
+      "range": [
+        0,
+        1
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_234851_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_234851_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 3,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 3,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 2,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_234851_result.xlsx\",\n  \"generated_at\": \"2026-04-18 23:49:55\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 2,
+      "range": [
+        1,
+        2
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_234958_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_234958_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_234958_result.xlsx\",\n  \"generated_at\": \"2026-04-18 23:50:13\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "merge_initial_batches",
+      "returncode": 0,
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260418_235014.xlsx",
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260418_235014_summary.json"
+    }
+  ]
+}

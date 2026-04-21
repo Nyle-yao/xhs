@@ -1,0 +1,21 @@
+{
+  "input_result": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_200849_result.xlsx",
+  "crawl_comments": false,
+  "max_notes_for_comments": 80,
+  "max_comments_per_note": 60,
+  "note_count": 9,
+  "existing_comment_count": 0,
+  "new_crawled_comment_count": 0,
+  "merged_comment_count": 0,
+  "self_comment_count": 0,
+  "ocr_row_count": 21,
+  "ocr_hit_count": 19,
+  "mention_count": 2,
+  "fund_summary_count": 2,
+  "blogger_summary_count": 1,
+  "failed_sheet_count": 6,
+  "comment_crawl_success_note_count": 0,
+  "comment_crawl_failed_note_count": 0,
+  "generated_at": "2026-04-18 20:15:07",
+  "output_excel": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/ops_enriched_20260418_201507.xlsx"
+}

@@ -1,0 +1,23 @@
+{
+  "input_file": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/resilient_round_20260419_024001_008_input.xlsx",
+  "sheet": "Sheet1",
+  "source_unique_bloggers": 2,
+  "blogger_success_count": 1,
+  "blogger_failed_count": 5,
+  "note_raw_count": 0,
+  "note_export_count": 0,
+  "comment_raw_count": 0,
+  "comment_export_count": 0,
+  "fund_mention_count": 0,
+  "unique_note_link_count": 3,
+  "note_cache_hit_count": 0,
+  "note_cache_miss_count": 3,
+  "comment_cache_hit_count": 0,
+  "comment_cache_miss_count": 0,
+  "skipped_duplicate_note_count": 0,
+  "risk_event_count": 3,
+  "context_rebuild_count": 0,
+  "reprobe_failed_count": 0,
+  "output_excel": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260419_025340_result.xlsx",
+  "generated_at": "2026-04-19 02:55:12"
+}

@@ -1,0 +1,13 @@
+{
+  "input_result": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260419_152354.xlsx",
+  "source_blogger_total": 163,
+  "blogger_success_total": 161,
+  "blogger_success_rate": 0.9877,
+  "note_total": 562,
+  "note_with_comments": 21,
+  "note_comment_hit_rate": 0.0374,
+  "comment_total": 290,
+  "self_comment_total": 92,
+  "note_gap_total": 39,
+  "generated_at": "2026-04-19 15:32:57"
+}

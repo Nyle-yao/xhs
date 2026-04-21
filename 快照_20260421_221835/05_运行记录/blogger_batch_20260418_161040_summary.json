@@ -1,0 +1,14 @@
+{
+  "input_file": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/deep_crawl_input_from_retry_20260418_160057.xlsx",
+  "sheet": "Sheet1",
+  "source_unique_bloggers": 66,
+  "blogger_success_count": 26,
+  "blogger_failed_count": 98,
+  "note_raw_count": 20,
+  "note_export_count": 20,
+  "comment_raw_count": 101,
+  "comment_export_count": 101,
+  "fund_mention_count": 0,
+  "output_excel": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_161040_result.xlsx",
+  "generated_at": "2026-04-18 16:33:42"
+}

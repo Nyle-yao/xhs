@@ -1,0 +1,8 @@
+{
+  "input_result": "/Users/yaoruanxingchen/Desktop/小红书爬虫/04_输出数据_历史/xhs_batch_merged_20260418_173644.xlsx",
+  "note_links_total": 20,
+  "refresh_success_count": 9,
+  "refresh_failed_count": 11,
+  "output_excel": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/note_media_refreshed_20260418_205134.xlsx",
+  "generated_at": "2026-04-18 20:51:34"
+}

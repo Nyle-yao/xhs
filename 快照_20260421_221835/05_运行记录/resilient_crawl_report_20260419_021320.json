@@ -1,0 +1,44 @@
+{
+  "run_id": "20260419_021320",
+  "started_at": "2026-04-19 02:13:20",
+  "source_total": 170,
+  "source_unique_ids": 163,
+  "baseline_merged": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260419_021225.xlsx",
+  "baseline_success_ids": 145,
+  "rounds": [
+    {
+      "round": 1,
+      "pending_before": 19,
+      "chunk_size": 3,
+      "returncode": 0,
+      "blocked": false,
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260419_021321_result.xlsx",
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260419_021321_summary.json",
+      "newly_success": 1,
+      "stdout_tail": "  \"source_unique_bloggers\": 3,\n  \"blogger_success_count\": 1,\n  \"blogger_failed_count\": 6,\n  \"note_raw_count\": 4,\n  \"note_export_count\": 4,\n  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 7,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 7,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 6,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260419_021321_result.xlsx\",\n  \"generated_at\": \"2026-04-19 02:15:52\"\n}",
+      "stderr_tail": "",
+      "recover_returncode": null,
+      "recover_stdout_tail": "",
+      "recover_stderr_tail": ""
+    },
+    {
+      "round": 2,
+      "pending_before": 18,
+      "chunk_size": 3,
+      "returncode": 0,
+      "blocked": true,
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260419_021604_result.xlsx",
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260419_021604_summary.json",
+      "newly_success": 2,
+      "stdout_tail": "  \"source_unique_bloggers\": 3,\n  \"blogger_success_count\": 2,\n  \"blogger_failed_count\": 6,\n  \"note_raw_count\": 11,\n  \"note_export_count\": 11,\n  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 15,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 15,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 6,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260419_021604_result.xlsx\",\n  \"generated_at\": \"2026-04-19 02:19:33\"\n}",
+      "stderr_tail": "",
+      "recover_returncode": null,
+      "recover_stdout_tail": "",
+      "recover_stderr_tail": ""
+    }
+  ],
+  "status": "RUNNING",
+  "current_success_ids": 148,
+  "current_pending": 15,
+  "current_coverage": 90.8
+}

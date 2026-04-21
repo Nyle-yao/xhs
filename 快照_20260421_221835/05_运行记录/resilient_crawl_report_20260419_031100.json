@@ -1,0 +1,36 @@
+{
+  "run_id": "20260419_031100",
+  "started_at": "2026-04-19 03:11:00",
+  "source_total": 6,
+  "source_unique_ids": 6,
+  "baseline_merged": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260419_030617.xlsx",
+  "baseline_success_ids": 157,
+  "rounds": [
+    {
+      "round": 1,
+      "pending_before": 6,
+      "chunk_size": 1,
+      "returncode": 0,
+      "blocked": false,
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260419_031101_result.xlsx",
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260419_031101_summary.json",
+      "newly_success": 0,
+      "stdout_tail": "  \"source_unique_bloggers\": 1,\n  \"blogger_success_count\": 0,\n  \"blogger_failed_count\": 1,\n  \"note_raw_count\": 0,\n  \"note_export_count\": 0,\n  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260419_031101_result.xlsx\",\n  \"generated_at\": \"2026-04-19 03:11:25\"\n}",
+      "stderr_tail": "",
+      "recover_returncode": null,
+      "recover_stdout_tail": "",
+      "recover_stderr_tail": ""
+    }
+  ],
+  "status": "PAUSED_NO_PROGRESS",
+  "current_success_ids": 0,
+  "current_pending": 6,
+  "current_coverage": 0.0,
+  "hint": "多轮无新增，通常为验证码风控；建议人工完成一次验证后继续。",
+  "ended_at": "2026-04-19 03:11:27",
+  "final_merged": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260419_031126.xlsx",
+  "final_success_ids": 0,
+  "final_pending": 6,
+  "final_coverage": 0.0,
+  "pending_list_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/resilient_pending_20260419_031100.xlsx"
+}

@@ -1,0 +1,33 @@
+{
+  "run_id": "20260421_081823",
+  "started_at": "2026-04-21 08:18:23",
+  "status": "RUNNING",
+  "steps": [
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 1,
+      "range": [
+        0,
+        5
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_081824_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_081824_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 15,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 15,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_081824_result.xlsx\",\n  \"generated_at\": \"2026-04-21 08:20:12\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 2,
+      "range": [
+        5,
+        10
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_082012_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_082012_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 15,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 15,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_082012_result.xlsx\",\n  \"generated_at\": \"2026-04-21 08:22:04\"\n}",
+      "stderr_tail": ""
+    }
+  ]
+}

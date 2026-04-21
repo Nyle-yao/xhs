@@ -1,0 +1,11 @@
+{
+  "source": "/Users/yaoruanxingchen/Desktop/20260420（算法迭代升级前）-标签整理_全历史池_修复清洗版_20260420.xlsx",
+  "output": "/Users/yaoruanxingchen/Desktop/小红书爬虫/04_输出数据_当前/小红书基金图片识别与语义语料库_20260421_103516.xlsx",
+  "fund_count": 709,
+  "detail_count": 2323,
+  "candidate_terms": 19513,
+  "ocr_terms": 19318,
+  "slang_terms": 30,
+  "operation_terms": 37,
+  "generated_at": "2026-04-21 10:35:21"
+}

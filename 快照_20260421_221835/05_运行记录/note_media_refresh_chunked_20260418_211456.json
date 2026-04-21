@@ -1,0 +1,29 @@
+{
+  "input_result": "/Users/yaoruanxingchen/Desktop/小红书爬虫/04_输出数据_历史/xhs_batch_merged_20260418_173644.xlsx",
+  "final_output_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/note_media_refreshed_20260418_211456.xlsx",
+  "batch_count": 2,
+  "processed_slots": 10,
+  "logs": [
+    {
+      "batch_no": 1,
+      "offset": 0,
+      "size": 5,
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/note_media_refreshed_20260418_211358_summary.json",
+      "output_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/note_media_refreshed_20260418_211358.xlsx",
+      "stdout_tail": "[refresh_progress] 5/5\n{\n  \"input_result\": \"/Users/yaoruanxingchen/Desktop/小红书爬虫/04_输出数据_历史/xhs_batch_merged_20260418_173644.xlsx\",\n  \"note_links_total\": 5,\n  \"refresh_success_count\": 2,\n  \"refresh_failed_count\": 3,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/note_media_refreshed_20260418_211358.xlsx\",\n  \"generated_at\": \"2026-04-18 21:13:59\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "batch_no": 2,
+      "offset": 5,
+      "size": 5,
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/note_media_refreshed_20260418_211456_summary.json",
+      "output_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/note_media_refreshed_20260418_211456.xlsx",
+      "stdout_tail": "[refresh_progress] 5/5\n{\n  \"input_result\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/note_media_refreshed_20260418_211358.xlsx\",\n  \"note_links_total\": 5,\n  \"refresh_success_count\": 0,\n  \"refresh_failed_count\": 5,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/note_media_refreshed_20260418_211456.xlsx\",\n  \"generated_at\": \"2026-04-18 21:14:56\"\n}",
+      "stderr_tail": ""
+    }
+  ],
+  "generated_at": "2026-04-18 21:14:56"
+}

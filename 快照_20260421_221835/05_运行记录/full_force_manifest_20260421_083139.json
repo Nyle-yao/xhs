@@ -1,0 +1,1118 @@
+{
+  "run_id": "20260421_083139",
+  "started_at": "2026-04-21 08:31:39",
+  "status": "RUNNING",
+  "steps": [
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 1,
+      "range": [
+        0,
+        2
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_083140_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_083140_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 80,\n  \"comment_export_count\": 80,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 8,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_083140_result.xlsx\",\n  \"generated_at\": \"2026-04-21 08:34:09\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 2,
+      "range": [
+        2,
+        4
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_083409_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_083409_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 89,\n  \"comment_export_count\": 89,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 9,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_083409_result.xlsx\",\n  \"generated_at\": \"2026-04-21 08:36:34\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 3,
+      "range": [
+        4,
+        6
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_083635_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_083635_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 118,\n  \"comment_export_count\": 118,\n  \"fund_mention_count\": 3,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 12,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_083635_result.xlsx\",\n  \"generated_at\": \"2026-04-21 08:39:19\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 4,
+      "range": [
+        6,
+        8
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_083920_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_083920_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 91,\n  \"comment_export_count\": 91,\n  \"fund_mention_count\": 10,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 10,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_083920_result.xlsx\",\n  \"generated_at\": \"2026-04-21 08:41:43\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 5,
+      "range": [
+        8,
+        10
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_084150_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_084150_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 89,\n  \"comment_export_count\": 89,\n  \"fund_mention_count\": 14,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 9,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_084150_result.xlsx\",\n  \"generated_at\": \"2026-04-21 08:44:21\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 6,
+      "range": [
+        10,
+        12
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_084421_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_084421_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 60,\n  \"comment_export_count\": 60,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 6,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 6,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 6,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_084421_result.xlsx\",\n  \"generated_at\": \"2026-04-21 08:45:36\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 7,
+      "range": [
+        12,
+        14
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_084536_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_084536_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 120,\n  \"comment_export_count\": 120,\n  \"fund_mention_count\": 14,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 12,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_084536_result.xlsx\",\n  \"generated_at\": \"2026-04-21 08:48:26\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 8,
+      "range": [
+        14,
+        16
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_084827_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_084827_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 94,\n  \"comment_export_count\": 94,\n  \"fund_mention_count\": 6,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 10,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_084827_result.xlsx\",\n  \"generated_at\": \"2026-04-21 08:51:29\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 9,
+      "range": [
+        16,
+        18
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_085130_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_085130_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 110,\n  \"comment_export_count\": 110,\n  \"fund_mention_count\": 5,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 11,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_085130_result.xlsx\",\n  \"generated_at\": \"2026-04-21 08:53:40\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 10,
+      "range": [
+        18,
+        20
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_085340_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_085340_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 89,\n  \"comment_export_count\": 89,\n  \"fund_mention_count\": 3,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 9,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_085340_result.xlsx\",\n  \"generated_at\": \"2026-04-21 08:55:44\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 11,
+      "range": [
+        20,
+        22
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_085545_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_085545_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 120,\n  \"comment_export_count\": 120,\n  \"fund_mention_count\": 1,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 12,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_085545_result.xlsx\",\n  \"generated_at\": \"2026-04-21 08:57:50\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 12,
+      "range": [
+        22,
+        24
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_085758_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_085758_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 110,\n  \"comment_export_count\": 110,\n  \"fund_mention_count\": 1,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 11,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_085758_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:00:05\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 13,
+      "range": [
+        24,
+        26
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_090007_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_090007_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 106,\n  \"comment_export_count\": 106,\n  \"fund_mention_count\": 8,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 11,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_090007_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:02:38\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 14,
+      "range": [
+        26,
+        28
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_090239_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_090239_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 112,\n  \"comment_export_count\": 112,\n  \"fund_mention_count\": 2,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 12,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_090239_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:07:13\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 15,
+      "range": [
+        28,
+        30
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_090714_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_090714_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 114,\n  \"comment_export_count\": 114,\n  \"fund_mention_count\": 2,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 12,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_090714_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:09:52\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 16,
+      "range": [
+        30,
+        32
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_091003_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_091003_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 57,\n  \"comment_export_count\": 57,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 9,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 9,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 6,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_091003_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:11:50\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 17,
+      "range": [
+        32,
+        34
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_091151_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_091151_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 98,\n  \"comment_export_count\": 98,\n  \"fund_mention_count\": 1,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 10,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_091151_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:13:57\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 18,
+      "range": [
+        34,
+        36
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_091403_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_091403_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 50,\n  \"comment_export_count\": 50,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 8,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_091403_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:18:21\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 19,
+      "range": [
+        36,
+        38
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_091821_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_091821_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 99,\n  \"comment_export_count\": 99,\n  \"fund_mention_count\": 1,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 10,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_091821_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:20:52\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 20,
+      "range": [
+        38,
+        40
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092053_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092053_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 85,\n  \"comment_export_count\": 85,\n  \"fund_mention_count\": 26,\n  \"unique_note_link_count\": 12,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 12,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 11,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092053_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:23:01\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 21,
+      "range": [
+        40,
+        42
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092302_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092302_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092302_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:23:22\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 22,
+      "range": [
+        42,
+        44
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092323_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092323_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 1,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 1,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092323_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:24:01\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 23,
+      "range": [
+        44,
+        46
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092402_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092402_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092402_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:24:23\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 24,
+      "range": [
+        46,
+        48
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092424_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092424_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092424_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:24:52\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 25,
+      "range": [
+        48,
+        50
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092453_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092453_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092453_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:25:12\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 26,
+      "range": [
+        50,
+        52
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092513_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092513_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092513_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:25:32\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 27,
+      "range": [
+        52,
+        54
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092532_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092532_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092532_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:25:53\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 28,
+      "range": [
+        54,
+        56
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092554_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092554_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092554_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:26:19\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 29,
+      "range": [
+        56,
+        58
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092620_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092620_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092620_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:26:42\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 30,
+      "range": [
+        58,
+        60
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092647_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092647_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092647_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:27:08\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 31,
+      "range": [
+        60,
+        62
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092708_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092708_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 1,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 1,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092708_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:27:36\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 32,
+      "range": [
+        62,
+        64
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092737_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092737_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092737_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:27:57\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 33,
+      "range": [
+        64,
+        66
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092757_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092757_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092757_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:28:23\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 34,
+      "range": [
+        66,
+        68
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092824_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092824_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092824_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:28:44\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 35,
+      "range": [
+        68,
+        70
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092850_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092850_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092850_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:29:10\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 36,
+      "range": [
+        70,
+        72
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092911_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092911_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092911_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:29:30\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 37,
+      "range": [
+        72,
+        74
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092931_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092931_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_092931_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:29:58\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 38,
+      "range": [
+        74,
+        76
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093000_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093000_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093000_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:30:25\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 39,
+      "range": [
+        76,
+        78
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093032_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093032_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093032_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:30:53\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 40,
+      "range": [
+        78,
+        80
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093053_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093053_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093053_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:31:10\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 41,
+      "range": [
+        80,
+        82
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093111_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093111_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093111_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:31:41\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 42,
+      "range": [
+        82,
+        84
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093142_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093142_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093142_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:32:02\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 43,
+      "range": [
+        84,
+        86
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093203_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093203_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093203_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:32:27\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 44,
+      "range": [
+        86,
+        88
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093228_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093228_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093228_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:32:49\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 45,
+      "range": [
+        88,
+        90
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093250_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093250_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093250_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:33:06\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 46,
+      "range": [
+        90,
+        92
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093307_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093307_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093307_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:33:31\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 47,
+      "range": [
+        92,
+        94
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093334_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093334_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093334_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:33:57\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 48,
+      "range": [
+        94,
+        96
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093358_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093358_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093358_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:34:22\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 49,
+      "range": [
+        96,
+        98
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093423_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093423_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093423_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:34:41\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 50,
+      "range": [
+        98,
+        100
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093448_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093448_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093448_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:35:09\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 51,
+      "range": [
+        100,
+        102
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093510_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093510_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093510_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:35:29\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 52,
+      "range": [
+        102,
+        104
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093529_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093529_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093529_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:35:58\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 53,
+      "range": [
+        104,
+        106
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093602_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093602_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093602_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:36:29\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 54,
+      "range": [
+        106,
+        108
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093629_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093629_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093629_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:36:52\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 55,
+      "range": [
+        108,
+        110
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093653_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093653_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093653_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:37:14\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 56,
+      "range": [
+        110,
+        112
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093726_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093726_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093726_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:37:49\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 57,
+      "range": [
+        112,
+        114
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093758_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093758_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093758_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:38:24\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 58,
+      "range": [
+        114,
+        116
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093825_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093825_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093825_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:38:44\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 59,
+      "range": [
+        116,
+        118
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093845_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093845_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093845_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:39:05\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 60,
+      "range": [
+        118,
+        120
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093905_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093905_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093905_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:39:25\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 61,
+      "range": [
+        120,
+        122
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093925_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093925_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093925_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:39:45\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 62,
+      "range": [
+        122,
+        124
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093945_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093945_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_093945_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:40:07\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 63,
+      "range": [
+        124,
+        126
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094009_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094009_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094009_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:40:33\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 64,
+      "range": [
+        126,
+        128
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094033_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094033_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094033_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:40:53\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 65,
+      "range": [
+        128,
+        130
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094053_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094053_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094053_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:41:16\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 66,
+      "range": [
+        130,
+        132
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094116_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094116_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094116_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:41:37\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 67,
+      "range": [
+        132,
+        134
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094138_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094138_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094138_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:42:09\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 68,
+      "range": [
+        134,
+        136
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094210_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094210_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094210_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:42:30\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 69,
+      "range": [
+        136,
+        138
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094231_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094231_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094231_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:42:54\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 70,
+      "range": [
+        138,
+        140
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094302_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094302_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094302_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:43:25\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 71,
+      "range": [
+        140,
+        142
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094326_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094326_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094326_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:43:48\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 72,
+      "range": [
+        142,
+        144
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094350_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094350_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094350_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:44:12\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 73,
+      "range": [
+        144,
+        146
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094413_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094413_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094413_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:44:33\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 74,
+      "range": [
+        146,
+        148
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094433_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094433_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094433_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:44:59\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 75,
+      "range": [
+        148,
+        150
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094504_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094504_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094504_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:45:34\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 76,
+      "range": [
+        150,
+        152
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094535_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094535_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094535_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:45:58\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 77,
+      "range": [
+        152,
+        154
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094559_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094559_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094559_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:46:16\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 78,
+      "range": [
+        154,
+        156
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094617_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094617_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094617_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:46:36\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 79,
+      "range": [
+        156,
+        158
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094637_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094637_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094637_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:46:56\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 80,
+      "range": [
+        158,
+        160
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094657_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094657_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094657_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:47:22\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 81,
+      "range": [
+        160,
+        162
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094729_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094729_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094729_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:47:49\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 82,
+      "range": [
+        162,
+        164
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094750_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094750_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094750_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:48:11\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 83,
+      "range": [
+        164,
+        166
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094811_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094811_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 1,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 1,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094811_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:48:38\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 84,
+      "range": [
+        166,
+        168
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094839_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094839_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094839_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:49:01\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "chunk_batch_crawl",
+      "chunk_index": 85,
+      "range": [
+        168,
+        170
+      ],
+      "returncode": 0,
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094902_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094902_result.xlsx",
+      "stdout_tail": "  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 0,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_094902_result.xlsx\",\n  \"generated_at\": \"2026-04-21 09:49:28\"\n}",
+      "stderr_tail": ""
+    },
+    {
+      "name": "merge_initial_batches",
+      "returncode": 0,
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260421_094935.xlsx",
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260421_094935_summary.json"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "run_id": "20260419_155418",
+  "started_at": "2026-04-19 15:54:18",
+  "source_total": 2,
+  "source_unique_records": 2,
+  "source_unique_ids": 2,
+  "source_unique_links": 2,
+  "baseline_merged": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260419_152354.xlsx",
+  "baseline_success_records": 0,
+  "baseline_success_ids": 161,
+  "baseline_success_links": 161,
+  "rounds": [
+    {
+      "round": 1,
+      "pending_before": 2,
+      "chunk_size": 1,
+      "returncode": 1,
+      "blocked": true,
+      "result_xlsx": "",
+      "summary_json": "",
+      "newly_success": 0,
+      "stdout_tail": "",
+      "stderr_tail": "[preflight_failed] 64a3f5ec00000000110034b9: fail | 访问被风控/验证码拦截: https://www.xiaohongshu.com/website-login/captcha?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fuser%2Fprofile%2F64a3f5ec00000000110034b9%3FexSource%3D&verifyUuid=d1933dee-874d-48b6-a3be-2cabf0e44058&verifyType=124&verifyBiz=461&verifyMsg=null",
+      "recover_returncode": 0,
+      "recover_stdout_tail": "[captcha_recover] 已打开验证窗口，请在浏览器内完成验证码/登录验证，完成后会自动继续。\n[captcha_recover] 验证通过，已恢复可访问状态。",
+      "recover_stderr_tail": ""
+    },
+    {
+      "round": 2,
+      "pending_before": 2,
+      "chunk_size": 1,
+      "returncode": 1,
+      "blocked": true,
+      "result_xlsx": "",
+      "summary_json": "",
+      "newly_success": 0,
+      "stdout_tail": "",
+      "stderr_tail": "[preflight_failed] 64a3f5ec00000000110034b9: fail | 访问被风控/验证码拦截: https://www.xiaohongshu.com/website-login/captcha?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fuser%2Fprofile%2F64a3f5ec00000000110034b9%3FexSource%3D&verifyUuid=ca08bad6-8f3c-411b-9651-7a5c72555313&verifyType=124&verifyBiz=461&verifyMsg=null",
+      "recover_returncode": 0,
+      "recover_stdout_tail": "[captcha_recover] 已打开验证窗口，请在浏览器内完成验证码/登录验证，完成后会自动继续。\n[captcha_recover] 验证通过，已恢复可访问状态。",
+      "recover_stderr_tail": ""
+    }
+  ],
+  "status": "RUNNING",
+  "current_success_records": 0,
+  "current_success_ids": 0,
+  "current_success_links": 0,
+  "current_pending": 2,
+  "current_coverage": 0.0
+}

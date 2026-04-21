@@ -1,0 +1,14 @@
+.DS_Store
+**/.DS_Store
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+.xhs_profile/
+**/.xhs_profile/
+.~*
+~$*
+*.tmp
+*.log
+.streamlit/credentials.toml
+**/.streamlit/credentials.toml

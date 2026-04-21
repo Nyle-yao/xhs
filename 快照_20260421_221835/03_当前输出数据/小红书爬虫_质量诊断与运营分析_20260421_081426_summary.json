@@ -1,0 +1,14 @@
+{
+  "input": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260419_160016.xlsx",
+  "output": "/Users/yaoruanxingchen/Desktop/小红书爬虫/04_输出数据_当前/小红书爬虫_质量诊断与运营分析_20260421_081426.xlsx",
+  "source_rows": 163,
+  "blogger_rows": 161,
+  "note_rows": 562,
+  "comment_rows": 290,
+  "old_fund_mentions": 19,
+  "enhanced_all_mentions": 235,
+  "confirmed_fund_mentions": 16,
+  "candidate_fund_mentions": 219,
+  "fund_alias_count": 797,
+  "generated_at": "2026-04-21 08:14:27"
+}

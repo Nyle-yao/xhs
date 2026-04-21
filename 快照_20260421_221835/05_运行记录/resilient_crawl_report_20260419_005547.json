@@ -1,0 +1,44 @@
+{
+  "run_id": "20260419_005547",
+  "started_at": "2026-04-19 00:55:47",
+  "source_total": 170,
+  "source_unique_ids": 163,
+  "baseline_merged": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260419_003830.xlsx",
+  "baseline_success_ids": 139,
+  "rounds": [
+    {
+      "round": 1,
+      "pending_before": 25,
+      "chunk_size": 5,
+      "returncode": 1,
+      "blocked": true,
+      "result_xlsx": "",
+      "summary_json": "",
+      "newly_success": 0,
+      "stdout_tail": "",
+      "stderr_tail": "[preflight_failed] 页面被风控/验证拦截"
+    },
+    {
+      "round": 2,
+      "pending_before": 25,
+      "chunk_size": 5,
+      "returncode": 1,
+      "blocked": true,
+      "result_xlsx": "",
+      "summary_json": "",
+      "newly_success": 0,
+      "stdout_tail": "",
+      "stderr_tail": "[preflight_failed] 访问被风控/验证码拦截: https://www.xiaohongshu.com/website-login/captcha?redirectPath=https%3A%2F%2Fwww.xiaohongshu.com%2Fuser%2Fprofile%2F64a3f5ec00000000110034b9%3FexSource%3D&verifyUuid=0fa6e5b2-8c82-47fb-8618-3e48690d588f&verifyType=124&verifyBiz=461&verifyMsg=null"
+    }
+  ],
+  "status": "PAUSED_NO_PROGRESS",
+  "current_success_ids": 139,
+  "current_pending": 25,
+  "current_coverage": 85.28,
+  "hint": "多轮无新增，通常为验证码风控；建议人工完成一次验证后继续。",
+  "ended_at": "2026-04-19 00:56:11",
+  "final_merged": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260419_003830.xlsx",
+  "final_success_ids": 139,
+  "final_pending": 25,
+  "final_coverage": 85.28
+}

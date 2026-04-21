@@ -1,0 +1,14 @@
+{
+  "input_file": "/Users/yaoruanxingchen/Desktop/小红书爬虫/03_输入数据/小红书博主初筛_剔除空.xlsx",
+  "sheet": "Sheet1",
+  "source_unique_bloggers": 5,
+  "blogger_success_count": 5,
+  "blogger_failed_count": 6,
+  "note_raw_count": 9,
+  "note_export_count": 9,
+  "comment_raw_count": 0,
+  "comment_export_count": 0,
+  "fund_mention_count": 0,
+  "output_excel": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_200849_result.xlsx",
+  "generated_at": "2026-04-18 20:12:22"
+}

@@ -1,0 +1,23 @@
+{
+  "input_file": "/Users/yaoruanxingchen/Desktop/小红书爬虫/03_输入数据/小红书博主初筛_剔除空.xlsx",
+  "sheet": "Sheet1",
+  "source_unique_bloggers": 2,
+  "blogger_success_count": 2,
+  "blogger_failed_count": 4,
+  "note_raw_count": 8,
+  "note_export_count": 8,
+  "comment_raw_count": 80,
+  "comment_export_count": 80,
+  "fund_mention_count": 0,
+  "unique_note_link_count": 12,
+  "note_cache_hit_count": 0,
+  "note_cache_miss_count": 12,
+  "comment_cache_hit_count": 0,
+  "comment_cache_miss_count": 8,
+  "skipped_duplicate_note_count": 0,
+  "risk_event_count": 0,
+  "context_rebuild_count": 0,
+  "reprobe_failed_count": 0,
+  "output_excel": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260421_082812_result.xlsx",
+  "generated_at": "2026-04-21 08:30:37"
+}

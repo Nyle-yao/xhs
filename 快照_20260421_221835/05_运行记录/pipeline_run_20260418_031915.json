@@ -1,0 +1,260 @@
+{
+  "run_id": "20260418_031915",
+  "started_at": "2026-04-18 03:19:15",
+  "ended_at": "2026-04-18 03:20:26",
+  "duration_sec": 70.66,
+  "overall_status": "WARN",
+  "outputs": {
+    "batch_result": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_031916_result.xlsx",
+    "batch_summary": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_031916_summary.json",
+    "retry_summary": "",
+    "enriched_result": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/ops_enriched_20260418_032025.xlsx",
+    "enriched_summary": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/ops_enriched_20260418_032025_summary.json",
+    "qa": {
+      "generated_at": "2026-04-18 03:20:26",
+      "overall_status": "WARN",
+      "batch_result": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_031916_result.xlsx",
+      "enriched_result": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/ops_enriched_20260418_032025.xlsx",
+      "batch_qa": {
+        "status": "WARN",
+        "checks": [
+          {
+            "level": "PASS",
+            "name": "sheet:source_blogger_list",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "sheet:blogger_export",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "sheet:note_export",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "sheet:comment_export",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "sheet:fund_mentions",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "sheet:failed",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "note_export.笔记ID",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "note_export.笔记链接",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "note_export.笔记标题",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "note_export.笔记内容",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "note_export.博主ID",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "note_export.rows",
+            "detail": "rows=3"
+          },
+          {
+            "level": "PASS",
+            "name": "note_export.id_uniqueness",
+            "detail": "ratio=1.0"
+          },
+          {
+            "level": "PASS",
+            "name": "blogger_export.博主ID",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "blogger_export.博主链接",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "blogger_export.rows",
+            "detail": "rows=1"
+          },
+          {
+            "level": "PASS",
+            "name": "failed.rows",
+            "detail": "rows=2"
+          },
+          {
+            "level": "WARN",
+            "name": "fund_mentions.rows",
+            "detail": "rows=0"
+          }
+        ]
+      },
+      "enriched_qa": {
+        "status": "WARN",
+        "checks": [
+          {
+            "level": "PASS",
+            "name": "sheet:fund_mentions_enhanced",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "sheet:ops_summary_fund",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "sheet:ops_summary_blogger",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "sheet:ops_action_fund",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "sheet:meta",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "ops_summary_fund.fund_name",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "ops_summary_fund.提及次数",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "ops_summary_fund.主推占比",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "ops_summary_fund.正向占比",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "ops_summary_fund.运营建议",
+            "detail": "存在"
+          },
+          {
+            "level": "WARN",
+            "name": "ops_summary_fund.rows",
+            "detail": "rows=0"
+          },
+          {
+            "level": "PASS",
+            "name": "fund_mentions_enhanced.fund_name",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "fund_mentions_enhanced.mention_role",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "fund_mentions_enhanced.sentiment",
+            "detail": "存在"
+          },
+          {
+            "level": "PASS",
+            "name": "fund_mentions_enhanced.match_type",
+            "detail": "存在"
+          },
+          {
+            "level": "WARN",
+            "name": "fund_mentions_enhanced.rows",
+            "detail": "rows=0"
+          }
+        ]
+      }
+    }
+  },
+  "metrics": {
+    "batch": {
+      "input_file": "/Users/yaoruanxingchen/Desktop/小红书博主初筛_剔除空.xlsx",
+      "sheet": "Sheet1",
+      "source_unique_bloggers": 3,
+      "blogger_success_count": 1,
+      "blogger_failed_count": 2,
+      "note_raw_count": 3,
+      "note_export_count": 3,
+      "comment_raw_count": 0,
+      "comment_export_count": 0,
+      "fund_mention_count": 0,
+      "output_excel": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_031916_result.xlsx",
+      "generated_at": "2026-04-18 03:20:24"
+    },
+    "retry": {},
+    "enrich": {
+      "input_result": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_031916_result.xlsx",
+      "crawl_comments": false,
+      "max_notes_for_comments": 80,
+      "max_comments_per_note": 60,
+      "note_count": 3,
+      "existing_comment_count": 0,
+      "new_crawled_comment_count": 0,
+      "merged_comment_count": 0,
+      "mention_count": 0,
+      "fund_summary_count": 0,
+      "blogger_summary_count": 0,
+      "failed_sheet_count": 2,
+      "comment_crawl_success_note_count": 0,
+      "comment_crawl_failed_note_count": 0,
+      "generated_at": "2026-04-18 03:20:25",
+      "output_excel": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/ops_enriched_20260418_032025.xlsx"
+    }
+  },
+  "steps": [
+    {
+      "name": "batch_crawl",
+      "returncode": 0,
+      "stdout_tail": "[retry] scrape_blogger:6846e13b000000001e0002e4 attempt=1/3 failed: 页面被验证/风控拦截; sleep=1200ms\n[progress] 3/3 bloggers done\n{\n  \"input_file\": \"/Users/yaoruanxingchen/Desktop/小红书博主初筛_剔除空.xlsx\",\n  \"sheet\": \"Sheet1\",\n  \"source_unique_bloggers\": 3,\n  \"blogger_success_count\": 1,\n  \"blogger_failed_count\": 2,\n  \"note_raw_count\": 3,\n  \"note_export_count\": 3,\n  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_031916_result.xlsx\",\n  \"generated_at\": \"2026-04-18 03:20:24\"\n}",
+      "stderr_tail": "",
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_031916_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_031916_result.xlsx"
+    },
+    {
+      "name": "ops_enrich",
+      "returncode": 0,
+      "stdout_tail": "{\n  \"input_result\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_031916_result.xlsx\",\n  \"crawl_comments\": false,\n  \"max_notes_for_comments\": 80,\n  \"max_comments_per_note\": 60,\n  \"note_count\": 3,\n  \"existing_comment_count\": 0,\n  \"new_crawled_comment_count\": 0,\n  \"merged_comment_count\": 0,\n  \"mention_count\": 0,\n  \"fund_summary_count\": 0,\n  \"blogger_summary_count\": 0,\n  \"failed_sheet_count\": 2,\n  \"comment_crawl_success_note_count\": 0,\n  \"comment_crawl_failed_note_count\": 0,\n  \"generated_at\": \"2026-04-18 03:20:25\",\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/ops_enriched_20260418_032025.xlsx\"\n}",
+      "stderr_tail": "",
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/ops_enriched_20260418_032025_summary.json",
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/ops_enriched_20260418_032025.xlsx"
+    },
+    {
+      "name": "qa_check",
+      "returncode": 0,
+      "stdout_tail": "        \"detail\": \"rows=0\"\n      },\n      {\n        \"level\": \"PASS\",\n        \"name\": \"fund_mentions_enhanced.fund_name\",\n        \"detail\": \"存在\"\n      },\n      {\n        \"level\": \"PASS\",\n        \"name\": \"fund_mentions_enhanced.mention_role\",\n        \"detail\": \"存在\"\n      },\n      {\n        \"level\": \"PASS\",\n        \"name\": \"fund_mentions_enhanced.sentiment\",\n        \"detail\": \"存在\"\n      },\n      {\n        \"level\": \"PASS\",\n        \"name\": \"fund_mentions_enhanced.match_type\",\n        \"detail\": \"存在\"\n      },\n      {\n        \"level\": \"WARN\",\n        \"name\": \"fund_mentions_enhanced.rows\",\n        \"detail\": \"rows=0\"\n      }\n    ]\n  }\n}",
+      "stderr_tail": "",
+      "qa_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/qa_pipeline_20260418_031915.json"
+    }
+  ]
+}

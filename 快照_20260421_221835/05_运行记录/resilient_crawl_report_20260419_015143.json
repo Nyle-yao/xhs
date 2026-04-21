@@ -1,0 +1,44 @@
+{
+  "run_id": "20260419_015143",
+  "started_at": "2026-04-19 01:51:43",
+  "source_total": 170,
+  "source_unique_ids": 163,
+  "baseline_merged": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260419_003830_noteid_repaired_20260419_011612.xlsx",
+  "baseline_success_ids": 139,
+  "rounds": [
+    {
+      "round": 1,
+      "pending_before": 25,
+      "chunk_size": 3,
+      "returncode": -9,
+      "blocked": false,
+      "result_xlsx": "",
+      "summary_json": "",
+      "newly_success": 0,
+      "stdout_tail": "",
+      "stderr_tail": "timeout>150s",
+      "recover_returncode": null,
+      "recover_stdout_tail": "",
+      "recover_stderr_tail": ""
+    },
+    {
+      "round": 2,
+      "pending_before": 25,
+      "chunk_size": 3,
+      "returncode": -9,
+      "blocked": false,
+      "result_xlsx": "",
+      "summary_json": "",
+      "newly_success": 0,
+      "stdout_tail": "",
+      "stderr_tail": "timeout>150s",
+      "recover_returncode": null,
+      "recover_stdout_tail": "",
+      "recover_stderr_tail": ""
+    }
+  ],
+  "status": "RUNNING",
+  "current_success_ids": 139,
+  "current_pending": 25,
+  "current_coverage": 85.28
+}

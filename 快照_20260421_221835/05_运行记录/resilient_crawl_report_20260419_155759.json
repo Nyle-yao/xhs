@@ -1,0 +1,35 @@
+{
+  "run_id": "20260419_155759",
+  "started_at": "2026-04-19 15:57:59",
+  "source_total": 2,
+  "source_unique_records": 2,
+  "source_unique_ids": 2,
+  "source_unique_links": 2,
+  "baseline_merged": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/xhs_batch_merged_20260419_152354.xlsx",
+  "baseline_success_records": 0,
+  "baseline_success_ids": 161,
+  "baseline_success_links": 161,
+  "rounds": [
+    {
+      "round": 1,
+      "pending_before": 2,
+      "chunk_size": 2,
+      "returncode": 0,
+      "blocked": true,
+      "result_xlsx": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260419_155913_result.xlsx",
+      "summary_json": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260419_155913_summary.json",
+      "newly_success": 0,
+      "stdout_tail": "  \"source_unique_bloggers\": 2,\n  \"blogger_success_count\": 0,\n  \"blogger_failed_count\": 2,\n  \"note_raw_count\": 0,\n  \"note_export_count\": 0,\n  \"comment_raw_count\": 0,\n  \"comment_export_count\": 0,\n  \"fund_mention_count\": 0,\n  \"unique_note_link_count\": 0,\n  \"note_cache_hit_count\": 0,\n  \"note_cache_miss_count\": 0,\n  \"comment_cache_hit_count\": 0,\n  \"comment_cache_miss_count\": 0,\n  \"skipped_duplicate_note_count\": 0,\n  \"risk_event_count\": 2,\n  \"context_rebuild_count\": 0,\n  \"reprobe_failed_count\": 0,\n  \"output_excel\": \"/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260419_155913_result.xlsx\",\n  \"generated_at\": \"2026-04-19 16:00:14\"\n}",
+      "stderr_tail": "",
+      "recover_returncode": 0,
+      "recover_stdout_tail": "[captcha_recover] 已打开验证窗口，请在浏览器内完成验证码/登录验证，完成后会自动继续。\n[captcha_recover] 验证通过，已恢复可访问状态。",
+      "recover_stderr_tail": ""
+    }
+  ],
+  "status": "RUNNING",
+  "current_success_records": 0,
+  "current_success_ids": 0,
+  "current_success_links": 0,
+  "current_pending": 2,
+  "current_coverage": 0.0
+}

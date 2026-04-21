@@ -1,0 +1,8 @@
+{
+  "input_result": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_170718_result.xlsx",
+  "retry_target_count": 29,
+  "retry_success_count": 15,
+  "retry_failed_count": 14,
+  "output_excel": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/failed_retry_20260418_172956.xlsx",
+  "generated_at": "2026-04-18 17:29:56"
+}

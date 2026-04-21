@@ -1,0 +1,421 @@
+{
+  "generated_at": "2026-04-18 23:46:44",
+  "overall_status": "WARN",
+  "batch_result": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_233528_result.xlsx",
+  "enriched_result": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/ops_enriched_20260418_234620.xlsx",
+  "batch_qa": {
+    "status": "WARN",
+    "checks": [
+      {
+        "level": "PASS",
+        "name": "sheet:source_blogger_list",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:blogger_export",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:note_export",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:comment_export",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:fund_mentions",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:failed",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "note_export.笔记ID",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "note_export.笔记链接",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "note_export.笔记标题",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "note_export.笔记内容",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "note_export.博主ID",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "note_export.rows",
+        "detail": "rows=10"
+      },
+      {
+        "level": "PASS",
+        "name": "note_export.id_uniqueness",
+        "detail": "ratio=1.0"
+      },
+      {
+        "level": "PASS",
+        "name": "blogger_export.博主ID",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "blogger_export.博主链接",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "blogger_export.rows",
+        "detail": "rows=3"
+      },
+      {
+        "level": "PASS",
+        "name": "failed.rows",
+        "detail": "rows=14"
+      },
+      {
+        "level": "WARN",
+        "name": "fund_mentions.rows",
+        "detail": "rows=0"
+      }
+    ]
+  },
+  "enriched_qa": {
+    "status": "WARN",
+    "checks": [
+      {
+        "level": "PASS",
+        "name": "sheet:fund_mentions_enhanced",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:ops_summary_fund",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:ops_summary_blogger",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:ops_action_fund",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:ops_sponsor_note",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:ops_sponsor_blogger",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:ops_sponsor_fund",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:ops_digest",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:signal_tag_summary",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:meta",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:comment_export_enhanced",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:image_audit_all",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:image_invalid_archive",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "sheet:image_valid_kept",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_summary_fund.fund_name",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_summary_fund.提及次数",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_summary_fund.主推占比",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_summary_fund.正向占比",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_summary_fund.运营建议",
+        "detail": "存在"
+      },
+      {
+        "level": "WARN",
+        "name": "ops_summary_fund.rows",
+        "detail": "rows=0"
+      },
+      {
+        "level": "PASS",
+        "name": "fund_mentions_enhanced.fund_name",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "fund_mentions_enhanced.mention_role",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "fund_mentions_enhanced.sentiment",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "fund_mentions_enhanced.match_type",
+        "detail": "存在"
+      },
+      {
+        "level": "WARN",
+        "name": "fund_mentions_enhanced.rows",
+        "detail": "rows=0"
+      },
+      {
+        "level": "PASS",
+        "name": "comment_export_enhanced.rows",
+        "detail": "rows=0"
+      },
+      {
+        "level": "PASS",
+        "name": "comment_export_enhanced.self_comment_count",
+        "detail": "rows=0"
+      },
+      {
+        "level": "PASS",
+        "name": "ocr_note_images.rows",
+        "detail": "rows=6"
+      },
+      {
+        "level": "PASS",
+        "name": "ocr_note_images.hit_rows",
+        "detail": "rows=4"
+      },
+      {
+        "level": "PASS",
+        "name": "ocr_note_images.avg_char",
+        "detail": "value=15.83"
+      },
+      {
+        "level": "PASS",
+        "name": "note_export.valid_image_notes",
+        "detail": "rows=6"
+      },
+      {
+        "level": "PASS",
+        "name": "image_audit_all.rows",
+        "detail": "rows=10"
+      },
+      {
+        "level": "PASS",
+        "name": "image_audit_all.invalid_ratio",
+        "detail": "value=0.4000"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_digest.模块",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_digest.指标",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_digest.数值",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_digest.说明",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_digest.rows",
+        "detail": "rows=12"
+      },
+      {
+        "level": "PASS",
+        "name": "signal_tag_summary.信号标签",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "signal_tag_summary.命中次数",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "signal_tag_summary.命中笔记数",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "signal_tag_summary.命中博主数",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "signal_tag_summary.说明",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "signal_tag_summary.rows",
+        "detail": "rows=14"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_note.笔记ID",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_note.博主ID",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_note.广告可能性分",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_note.风险等级",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_note.运营建议",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_note.rows",
+        "detail": "rows=10"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_blogger.博主ID",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_blogger.样本笔记数",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_blogger.高风险笔记数",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_blogger.平均广告分",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_blogger.运营建议",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_blogger.rows",
+        "detail": "rows=3"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_fund.fund_code",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_fund.fund_name",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_fund.涉及笔记数",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_fund.高风险关联笔记数",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_fund.平均关联广告分",
+        "detail": "存在"
+      },
+      {
+        "level": "PASS",
+        "name": "ops_sponsor_fund.运营建议",
+        "detail": "存在"
+      },
+      {
+        "level": "WARN",
+        "name": "ops_sponsor_fund.rows",
+        "detail": "rows=0"
+      }
+    ]
+  }
+}

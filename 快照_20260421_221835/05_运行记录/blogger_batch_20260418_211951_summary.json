@@ -1,0 +1,20 @@
+{
+  "input_file": "/private/var/folders/x9/9tgk34711ks11zv2qm1pkbk80000gn/T/xhs_chunks_33gi6fji/chunk_001_0_8.xlsx",
+  "sheet": "Sheet1",
+  "source_unique_bloggers": 8,
+  "blogger_success_count": 4,
+  "blogger_failed_count": 18,
+  "note_raw_count": 18,
+  "note_export_count": 18,
+  "comment_raw_count": 0,
+  "comment_export_count": 0,
+  "fund_mention_count": 0,
+  "unique_note_link_count": 32,
+  "note_cache_hit_count": 0,
+  "note_cache_miss_count": 32,
+  "comment_cache_hit_count": 0,
+  "comment_cache_miss_count": 0,
+  "skipped_duplicate_note_count": 0,
+  "output_excel": "/Users/yaoruanxingchen/c/xhs_task_dashboard/outputs/blogger_batch_20260418_211951_result.xlsx",
+  "generated_at": "2026-04-18 21:25:47"
+}
