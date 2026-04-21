@@ -531,10 +531,15 @@ async function v2Status(){
   try {
     const r = await fetch(API + '/api/v1/auth/login/debug?_=' + Date.now());
     const d = await r.json();
-    const ok = d.logged_in || (d.cookies && d.cookies.web_session);
+    const data = d.data || d;
+    const names = data.cookie_names || [];
+    const hasSess = names.includes('web_session');
+    const body = (data.body_preview||'');
+    const hasMe = body.indexOf('我')>=0 || body.indexOf('创作中心')>=0;
+    const ok = data.logged_in || (hasSess && hasMe);
     document.getElementById('v2Login').innerHTML = ok
-      ? '<span style="color:#16a34a;font-weight:600">✅ 已登录</span> '+(d.user_name||d.user_id||'')
-      : '<span style="color:#dc2626;font-weight:600">❌ 未登录</span>';
+      ? '<span style="color:#16a34a;font-weight:600">✅ 已登录</span> <span class="muted" style="font-size:11px">(web_session ✓)</span>'
+      : '<span style="color:#dc2626;font-weight:600">❌ 未登录</span> <span class="muted" style="font-size:11px">'+(data.reason||'')+'</span>';
   } catch(e){ document.getElementById('v2Login').textContent = '检测失败：'+e; }
 }
 async function v2FetchAll(){
