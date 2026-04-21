@@ -696,12 +696,14 @@ async function v2Refresh(){
           const sz = f.size>1024 ? (f.size/1024).toFixed(1)+'KB' : f.size+'B';
           const url = API + '/api/v1/outputs/' + encodeURIComponent(f.name);
           const viewUrl = API + '/api/v1/view/' + encodeURIComponent(f.name);
+          const xlsxUrl = API + '/api/v1/export/' + encodeURIComponent(f.name);
           return `<tr style="border-top:1px solid #eee">
             <td style="padding:4px">${kind}</td>
             <td style="padding:4px;font-family:monospace;font-size:11px">${v2Esc(f.name)}</td>
             <td style="padding:4px;text-align:right">${sz}</td>
             <td style="padding:4px">
               <a href="${viewUrl}" target="_blank" style="color:#16a34a;font-weight:600">🎨 可视化</a> ·
+              <a href="${xlsxUrl}" style="color:#16a34a">📊 Excel</a> ·
               <a href="${url}" target="_blank">JSON</a> ·
               <a href="${url}" download>下载</a>
             </td>
@@ -731,13 +733,14 @@ async function v2RecRefresh(){
       const ago = v2FmtAgo(r.captured_at);
       const when = new Date((r.captured_at||0)*1000).toLocaleString('zh-CN');
       const viewUrl = API + '/api/v1/view/' + encodeURIComponent(r.file);
-      const jsonUrl = API + '/api/v1/outputs/' + encodeURIComponent(r.file);
+      const xlsxUrl = API + '/api/v1/export/' + encodeURIComponent(r.file);
       const refetch = (r.kind==='user_posts' && r.params && r.params.user_url_or_id)
-        ? `<button class="light" style="font-size:10px;padding:1px 5px;margin-left:4px" onclick="v2RecRefetch('${v2Esc(r.id)}')" title="重新抓取">🔄</button>` : '';
-      return `<div style="border:1px solid #e5e7eb;border-radius:8px;padding:6px 10px;background:#fff;min-width:240px;max-width:320px">
+        ? `<button class="light" style="font-size:10px;padding:1px 5px" onclick="v2RecRefetch('${v2Esc(r.id)}')" title="重新抓取">🔄</button>` : '';
+      return `<div style="border:1px solid #e5e7eb;border-radius:8px;padding:6px 10px;background:#fff;min-width:260px;max-width:340px">
         <div style="display:flex;align-items:center;gap:4px">
           <span style="font-size:14px">${k.ico}</span>
           <a href="${viewUrl}" target="_blank" style="color:${k.col};font-weight:600;text-decoration:none;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${v2Esc(r.label)}">${v2Esc(r.label)}</a>
+          <a href="${xlsxUrl}" title="下载 Excel" style="font-size:13px;text-decoration:none">📊</a>
           ${refetch}
           <button class="light" style="font-size:10px;padding:1px 5px;color:#dc2626" onclick="v2RecDelete('${v2Esc(r.id)}',${r.kind==='user_posts'?'false':'true'})" title="删除记录${r.kind==='user_posts'?'':'+文件'}">✕</button>
         </div>

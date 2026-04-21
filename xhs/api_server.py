@@ -537,6 +537,37 @@ def delete_record(rec_id: str, with_file: bool = False) -> dict[str, Any]:
     return {"ok": ok}
 
 
+@app.get("/api/v1/export/{name}")
+def export_output(name: str):
+    """Download a saved JSON record as an .xlsx file."""
+    from pathlib import Path as _P
+    from fastapi.responses import Response
+    from fastapi import HTTPException
+    if "/" in name or ".." in name:
+        raise HTTPException(status_code=400, detail="invalid name")
+    outdir = _P(__file__).resolve().parent / "outputs"
+    fp = outdir / name
+    if not fp.exists() or not fp.is_file():
+        raise HTTPException(status_code=404, detail="not found")
+    try:
+        from . import exporter as _exp  # type: ignore
+    except Exception:
+        import importlib.util as _u, sys as _s
+        spec = _u.spec_from_file_location("xhs_exporter", _P(__file__).parent / "exporter.py")
+        _exp = _u.module_from_spec(spec); _s.modules["xhs_exporter"] = _exp
+        spec.loader.exec_module(_exp)  # type: ignore
+    try:
+        data, fname = _exp.export(name, fp)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    from urllib.parse import quote
+    return Response(
+        content=data,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f"attachment; filename*=UTF-8''{quote(fname)}"},
+    )
+
+
 @app.get("/api/v1/view/{name}")
 def view_output(name: str):
     """Render saved JSON as a styled, self-contained HTML page."""
