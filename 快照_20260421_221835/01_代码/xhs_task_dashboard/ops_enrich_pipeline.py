@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 import math
+import os
 import re
 import time
 from collections import Counter
@@ -21,14 +23,38 @@ from scraper import XHSScraper
 try:
     import cv2  # type: ignore
     import numpy as np  # type: ignore
-    from rapidocr_onnxruntime import RapidOCR  # type: ignore
 
-    OCR_RUNTIME_OK = True
+    CV_RUNTIME_OK = True
 except Exception:
     cv2 = None  # type: ignore
     np = None  # type: ignore
+    CV_RUNTIME_OK = False
+
+try:
+    from rapidocr_onnxruntime import RapidOCR  # type: ignore
+
+    RAPID_OCR_RUNTIME_OK = True
+except Exception:
     RapidOCR = None  # type: ignore
-    OCR_RUNTIME_OK = False
+    RAPID_OCR_RUNTIME_OK = False
+
+try:
+    from openai import OpenAI  # type: ignore
+
+    QIANFAN_SDK_OK = True
+except Exception:
+    OpenAI = None  # type: ignore
+    QIANFAN_SDK_OK = False
+
+OCR_RUNTIME_OK = RAPID_OCR_RUNTIME_OK
+
+QIANFAN_DEFAULT_BASE_URL = "https://qianfan.baidubce.com/v2"
+QIANFAN_DEFAULT_MODEL = "ernie-4.5-turbo-vl"
+QIANFAN_API_KEY_ENV_KEYS = (
+    "BAIDU_QIANFAN_API_KEY",
+    "QIANFAN_API_KEY",
+    "ERNIE_API_KEY",
+)
 
 
 PROMOTE_KEYWORDS = [
@@ -236,6 +262,7 @@ OCR_IMAGE_COLUMNS = [
     "blogger_name",
     "image_index",
     "image_url",
+    "ocr_provider",
     "ocr_text",
     "ocr_char_count",
     "ocr_ok",
@@ -912,6 +939,169 @@ def _build_dual_tag_bridge(fund_sum: pd.DataFrame, leshu_tag_df: pd.DataFrame) -
     return pd.DataFrame(rows, columns=cols)
 
 
+@dataclass
+class OcrRuntime:
+    provider: str
+    client: Any = None
+    rapid_engine: Any = None
+    model: str = ""
+    temperature: float = 0.1
+    top_p: float = 0.2
+
+
+def _load_local_env_file() -> None:
+    """Load .env/.env.local lightly without adding another runtime dependency."""
+    candidates = [
+        Path.cwd() / ".env.local",
+        Path.cwd() / ".env",
+        Path(__file__).resolve().parent / ".env.local",
+        Path(__file__).resolve().parent / ".env",
+    ]
+    seen: set[Path] = set()
+    for env_path in candidates:
+        env_path = env_path.resolve()
+        if env_path in seen or not env_path.exists():
+            continue
+        seen.add(env_path)
+        try:
+            for raw_line in env_path.read_text(encoding="utf-8").splitlines():
+                line = raw_line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                if line.startswith("export "):
+                    line = line[len("export ") :].strip()
+                if "=" not in line:
+                    continue
+                key, value = line.split("=", 1)
+                key = key.strip()
+                value = value.strip().strip("'\"")
+                if key and key not in os.environ:
+                    os.environ[key] = value
+        except Exception:
+            continue
+
+
+def _qianfan_api_key(cli_value: str = "") -> str:
+    if str(cli_value or "").strip():
+        return str(cli_value or "").strip()
+    for env_key in QIANFAN_API_KEY_ENV_KEYS:
+        value = os.getenv(env_key, "").strip()
+        if value:
+            return value
+    return ""
+
+
+def _safe_ocr_error(err: Any) -> str:
+    msg = str(err or "").strip()
+    for env_key in QIANFAN_API_KEY_ENV_KEYS:
+        secret = os.getenv(env_key, "").strip()
+        if secret:
+            msg = msg.replace(secret, "***")
+    msg = re.sub(r"bce-v3/[^\s'\"]+", "bce-v3/***", msg)
+    msg = re.sub(r"\s+", " ", msg)
+    return msg[:260]
+
+
+def _init_ocr_runtime(args: argparse.Namespace) -> tuple[OcrRuntime | None, str]:
+    provider = str(getattr(args, "ocr_provider", "") or "qianfan").strip().lower()
+    api_key = _qianfan_api_key(str(getattr(args, "qianfan_api_key", "") or ""))
+    if provider == "auto":
+        provider = "qianfan" if (api_key and QIANFAN_SDK_OK) else "rapidocr"
+
+    if provider == "qianfan":
+        if not QIANFAN_SDK_OK or OpenAI is None:
+            return None, "qianfan_sdk_unavailable: 请先安装 openai SDK"
+        if not api_key:
+            return None, "qianfan_api_key_missing: 请设置 BAIDU_QIANFAN_API_KEY"
+        try:
+            client = OpenAI(
+                base_url=str(getattr(args, "qianfan_base_url", "") or QIANFAN_DEFAULT_BASE_URL),
+                api_key=api_key,
+                timeout=max(10, int(getattr(args, "qianfan_request_timeout_sec", 60) or 60)),
+            )
+            return (
+                OcrRuntime(
+                    provider="qianfan",
+                    client=client,
+                    model=str(getattr(args, "qianfan_model", "") or QIANFAN_DEFAULT_MODEL),
+                    temperature=float(getattr(args, "qianfan_temperature", 0.1)),
+                    top_p=float(getattr(args, "qianfan_top_p", 0.2)),
+                ),
+                "",
+            )
+        except Exception as e:
+            return None, f"qianfan_init_exception:{_safe_ocr_error(e)}"
+
+    if provider == "rapidocr":
+        if not (CV_RUNTIME_OK and cv2 is not None and np is not None):
+            return None, "opencv_unavailable"
+        if not (RAPID_OCR_RUNTIME_OK and RapidOCR is not None):
+            return None, "rapidocr_runtime_unavailable"
+        try:
+            return OcrRuntime(provider="rapidocr", rapid_engine=RapidOCR()), ""
+        except Exception as e:
+            return None, f"rapidocr_init_exception:{_safe_ocr_error(e)}"
+
+    return None, f"unknown_ocr_provider:{provider}"
+
+
+def _normalize_ocr_text(text: Any) -> str:
+    t = str(text or "").strip()
+    if not t:
+        return ""
+    t = re.sub(r"^```(?:text|txt)?", "", t, flags=re.I).strip()
+    t = re.sub(r"```$", "", t).strip()
+    no_text_patterns = [
+        "无",
+        "没有文字",
+        "未识别到文字",
+        "图片中没有文字",
+        "图片中没有可见文字",
+        "未发现可见文字",
+    ]
+    if t.replace("。", "").replace(".", "").strip() in no_text_patterns:
+        return ""
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def _response_text(response: Any) -> str:
+    try:
+        content = response.choices[0].message.content
+    except Exception:
+        return ""
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts: list[str] = []
+        for item in content:
+            if isinstance(item, dict):
+                txt = item.get("text") or item.get("content") or ""
+            else:
+                txt = getattr(item, "text", "") or getattr(item, "content", "")
+            if txt:
+                parts.append(str(txt))
+        return "\n".join(parts)
+    return str(content or "")
+
+
+def _image_to_data_url(img: Any, max_side: int = 1800) -> tuple[str, str]:
+    if img is None or cv2 is None:
+        return "", "empty_image"
+    try:
+        h, w = img.shape[:2]
+        prepared = img
+        if max(h, w) > max_side:
+            scale = max_side / float(max(h, w))
+            prepared = cv2.resize(img, (max(1, int(w * scale)), max(1, int(h * scale))), interpolation=cv2.INTER_AREA)
+        ok, buf = cv2.imencode(".jpg", prepared, [int(cv2.IMWRITE_JPEG_QUALITY), 92])
+        if not ok:
+            return "", "image_encode_failed"
+        b64 = base64.b64encode(buf.tobytes()).decode("ascii")
+        return f"data:image/jpeg;base64,{b64}", ""
+    except Exception as e:
+        return "", f"image_encode_exception:{_safe_ocr_error(e)}"
+
+
 def _is_static_or_bad_image_url(url: str) -> bool:
     u = str(url or "").lower()
     bad_tokens = [
@@ -1049,9 +1239,9 @@ def _audit_image_url(url: str, timeout_sec: int = 12) -> tuple[dict[str, Any], A
     return rec, img
 
 
-def _ocr_text_from_image(img, ocr_engine) -> tuple[str, str]:
-    if not (OCR_RUNTIME_OK and ocr_engine and cv2 is not None and np is not None):
-        return "", "ocr_runtime_unavailable"
+def _rapid_ocr_text_from_image(img: Any, ocr_engine: Any) -> tuple[str, str]:
+    if not (RAPID_OCR_RUNTIME_OK and ocr_engine and cv2 is not None and np is not None):
+        return "", "rapidocr_runtime_unavailable"
     try:
         if img is None:
             return "", "empty_image"
@@ -1106,19 +1296,63 @@ def _ocr_text_from_image(img, ocr_engine) -> tuple[str, str]:
             return "", "ocr_low_info_filtered"
         return best, ""
     except Exception as e:
-        return "", f"ocr_exception:{e}"
+        return "", f"rapidocr_exception:{_safe_ocr_error(e)}"
 
 
-def _ocr_text_from_url(url: str, ocr_engine, timeout_sec: int = 12) -> tuple[str, str]:
-    if not (OCR_RUNTIME_OK and ocr_engine and cv2 is not None and np is not None):
+def _qianfan_ocr_text_from_image(img: Any, ocr_runtime: OcrRuntime) -> tuple[str, str]:
+    if not (QIANFAN_SDK_OK and ocr_runtime and ocr_runtime.client):
+        return "", "qianfan_runtime_unavailable"
+    data_url, enc_err = _image_to_data_url(img)
+    if enc_err:
+        return "", enc_err
+    prompt = (
+        "请对这张小红书图片做高召回OCR。只输出图片中的可见文字，保留中文、英文、数字、"
+        "基金代码、百分比、金额、日期；按自然阅读顺序排列。不要解释，不要总结，不要猜测。"
+        "如果没有可见文字，只输出“无”。"
+    )
+    try:
+        response = ocr_runtime.client.chat.completions.create(
+            model=ocr_runtime.model or QIANFAN_DEFAULT_MODEL,
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": prompt},
+                        {"type": "image_url", "image_url": {"url": data_url}},
+                    ],
+                }
+            ],
+            temperature=ocr_runtime.temperature,
+            top_p=ocr_runtime.top_p,
+            extra_body={
+                "penalty_score": 1,
+                "stop": [],
+                "compression": True,
+            },
+        )
+        txt = _normalize_ocr_text(_response_text(response))
+        if not txt:
+            return "", "qianfan_empty_response"
+        return txt, ""
+    except Exception as e:
+        return "", f"qianfan_exception:{_safe_ocr_error(e)}"
+
+
+def _ocr_text_from_url(url: str, ocr_runtime: OcrRuntime | None, timeout_sec: int = 12) -> tuple[str, str]:
+    if ocr_runtime is None:
         return "", "ocr_runtime_unavailable"
     rec, img = _audit_image_url(url, timeout_sec=timeout_sec)
     if rec.get("is_valid") != "是":
         return "", str(rec.get("invalid_reason", "") or "image_invalid")
-    return _ocr_text_from_image(img, ocr_engine)
+    if ocr_runtime.provider == "qianfan":
+        return _qianfan_ocr_text_from_image(img, ocr_runtime)
+    if ocr_runtime.provider == "rapidocr":
+        return _rapid_ocr_text_from_image(img, ocr_runtime.rapid_engine)
+    return "", f"unknown_ocr_provider:{ocr_runtime.provider}"
 
 
 def main() -> None:
+    _load_local_env_file()
     p = argparse.ArgumentParser(description="小红书二轮增强：评论补抓 + 提及语义增强 + 运营汇总")
     p.add_argument("--input-result", required=True, help="第一轮结果 xlsx（含 note_export）")
     p.add_argument("--fund-aliases", default="./fund_aliases.json", help="基金别名库")
@@ -1129,6 +1363,18 @@ def main() -> None:
     p.add_argument("--max-comments-per-note", type=int, default=60, help="每篇笔记评论上限")
     p.add_argument("--sleep-ms", type=int, default=300, help="每篇笔记评论抓取间隔（毫秒）")
     p.add_argument("--ocr-images", action="store_true", help="是否对笔记图片做OCR并参与基金提及识别")
+    p.add_argument(
+        "--ocr-provider",
+        choices=["qianfan", "rapidocr", "auto"],
+        default=os.getenv("XHS_OCR_PROVIDER", "qianfan"),
+        help="OCR引擎：qianfan=百度千帆视觉大模型（默认），rapidocr=本地OCR，auto=优先千帆否则本地",
+    )
+    p.add_argument("--qianfan-api-key", default="", help="百度千帆API Key；建议使用BAIDU_QIANFAN_API_KEY环境变量")
+    p.add_argument("--qianfan-base-url", default=os.getenv("QIANFAN_BASE_URL", QIANFAN_DEFAULT_BASE_URL))
+    p.add_argument("--qianfan-model", default=os.getenv("QIANFAN_MODEL", QIANFAN_DEFAULT_MODEL))
+    p.add_argument("--qianfan-temperature", type=float, default=float(os.getenv("QIANFAN_TEMPERATURE", "0.1")))
+    p.add_argument("--qianfan-top-p", type=float, default=float(os.getenv("QIANFAN_TOP_P", "0.2")))
+    p.add_argument("--qianfan-request-timeout-sec", type=int, default=int(os.getenv("QIANFAN_REQUEST_TIMEOUT_SEC", "60")))
     p.add_argument("--ocr-max-notes", type=int, default=80, help="OCR最多处理多少篇笔记")
     p.add_argument("--ocr-max-images-per-note", type=int, default=0, help="每篇笔记最多OCR几张图；0=全图")
     p.add_argument(
@@ -1465,17 +1711,15 @@ def main() -> None:
     # OCR: 笔记图片识别（可选）
     ocr_rows: list[dict[str, Any]] = []
     ocr_kept_pairs: set[tuple[str, str]] = set()
-    ocr_engine = None
-    if args.ocr_images and OCR_RUNTIME_OK and RapidOCR is not None:
-        try:
-            ocr_engine = RapidOCR()
-        except Exception as e:
-            print(f"[ocr_init_warn] {e}")
-            ocr_engine = None
-    elif args.ocr_images and not OCR_RUNTIME_OK:
-        print("[ocr_warn] OCR运行时不可用，跳过OCR。")
+    ocr_runtime: OcrRuntime | None = None
+    if args.ocr_images:
+        ocr_runtime, ocr_init_err = _init_ocr_runtime(args)
+        if ocr_runtime is None:
+            print(f"[ocr_warn] {ocr_init_err}，跳过OCR。")
+        else:
+            print(f"[ocr_info] 使用OCR引擎: {ocr_runtime.provider}")
 
-    if args.ocr_images and ocr_engine is not None:
+    if args.ocr_images and ocr_runtime is not None:
         for idx, r in enumerate(note_rows_valid, start=1):
             if idx > max(0, args.ocr_max_notes):
                 break
@@ -1489,7 +1733,7 @@ def main() -> None:
             urls_for_ocr = urls if note_ocr_limit <= 0 else urls[: max(1, note_ocr_limit)]
             for j, u in enumerate(urls_for_ocr, start=1):
                 ocr_kept_pairs.add((nid, u))
-                txt, err = _ocr_text_from_url(u, ocr_engine, timeout_sec=max(5, args.ocr_timeout_sec))
+                txt, err = _ocr_text_from_url(u, ocr_runtime, timeout_sec=max(5, args.ocr_timeout_sec))
                 ocr_rows.append(
                     {
                         "image_source": "note_image",
@@ -1499,6 +1743,7 @@ def main() -> None:
                         "blogger_name": bname,
                         "image_index": j,
                         "image_url": u,
+                        "ocr_provider": ocr_runtime.provider,
                         "ocr_text": txt,
                         "ocr_char_count": len(txt or ""),
                         "ocr_ok": "是" if (txt and not err) else "否",
@@ -1510,7 +1755,7 @@ def main() -> None:
     if (
         args.ocr_images
         and args.ocr_comment_images
-        and ocr_engine is not None
+        and ocr_runtime is not None
         and (not comment_all_df.empty)
         and ("评论图片链接" in comment_all_df.columns)
     ):
@@ -1528,7 +1773,7 @@ def main() -> None:
             if not urls:
                 continue
             for j, u in enumerate(urls[:max_imgs_per_comment], start=1):
-                txt, err = _ocr_text_from_url(u, ocr_engine, timeout_sec=max(5, args.ocr_timeout_sec))
+                txt, err = _ocr_text_from_url(u, ocr_runtime, timeout_sec=max(5, args.ocr_timeout_sec))
                 ocr_rows.append(
                     {
                         "image_source": "comment_image",
@@ -1538,6 +1783,7 @@ def main() -> None:
                         "blogger_name": blogger_name,
                         "image_index": j,
                         "image_url": u,
+                        "ocr_provider": ocr_runtime.provider,
                         "ocr_text": txt,
                         "ocr_char_count": len(txt or ""),
                         "ocr_ok": "是" if (txt and not err) else "否",

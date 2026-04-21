@@ -10,5 +10,11 @@ __pycache__/
 ~$*
 *.tmp
 *.log
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
 .streamlit/credentials.toml
 **/.streamlit/credentials.toml

@@ -23,7 +23,8 @@ python3 -m playwright install chromium
 依赖说明（已内置在 `requirements.txt`）：
 
 - `numpy<2` + `pyarrow==14.0.2`：避免数据链路兼容冲突
-- `rapidocr-onnxruntime` + `opencv-python(-headless)`：启用图片OCR链路
+- `openai`：通过 OpenAI 兼容接口调用百度千帆视觉大模型 OCR
+- `rapidocr-onnxruntime` + `opencv-python(-headless)`：本地图片OCR兜底链路
 - `urllib3<2`：规避本机 LibreSSL 警告噪音
 
 ## 2. 启动
@@ -110,6 +111,7 @@ python3 ops_enrich_pipeline.py \
 
 可选增强能力（本轮新增）：
 
+- 笔记/评论图片OCR：默认使用百度千帆视觉大模型，可用 `--ocr-provider rapidocr` 切回本地OCR
 - 评论图片OCR（默认开启，可用 `--no-ocr-comment-images` 关闭）
 - 外部标签桥接（传入 `--leshu-tag-file`，生成 `fund_tag_bridge` + `external_tag_source`）
 
@@ -139,10 +141,16 @@ python3 build_deep_crawl_input.py \
 
 ## 4.5 评论本人识别 + OCR（增强）
 
+OCR 默认走百度千帆 OpenAI 兼容接口。运行前设置环境变量，或在代码目录放本地 `.env.local`：
+
+```bash
+export BAIDU_QIANFAN_API_KEY="你的百度千帆API Key"
+```
+
 在 `ops_enrich_pipeline.py` 中新增：
 
 - `comment_self_only` 分表（只保留“博主本人评论(猜测)=是”）
-- `ocr_note_images` 分表（图片OCR结果）
+- `ocr_note_images` 分表（图片OCR结果，含 `ocr_provider` 字段）
 - OCR文本会参与基金提及识别（source_field=`ocr_image_text`）
 - `image_audit_all`（全部图片质量审计）
 - `image_invalid_archive`（无效图片归档，不参与OCR）
@@ -159,6 +167,8 @@ python3 ops_enrich_pipeline.py \
   --input-result ./outputs/blogger_batch_YYYYMMDD_HHMMSS_result.xlsx \
   --fund-aliases ./fund_aliases_expanded.json \
   --ocr-images \
+  --ocr-provider qianfan \
+  --qianfan-model ernie-4.5-turbo-vl \
   --ocr-max-notes 80 \
   --ocr-max-images-per-note 2 \
   --output-dir ./outputs
