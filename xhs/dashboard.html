@@ -82,7 +82,21 @@
           <strong>① 状态：</strong>
           <span id="v2Login" style="margin-left:6px">未检测</span>
           <button class="light" style="margin-left:8px" onclick="v2Status()">刷新登录状态</button>
-          <span style="margin-left:14px;color:#666">如未登录请回到上方"导入 Cookie"导入。</span>
+          <button class="light" style="margin-left:6px" onclick="v2ToggleCookieBox()">📥 注入 Cookie</button>
+          <div id="v2CookieBox" style="display:none;margin-top:8px;padding:8px;background:#fff;border:1px dashed #16a34a;border-radius:6px">
+            <div class="muted" style="font-size:12px;margin-bottom:4px">
+              支持 3 种格式（自动识别）：
+              ① EditThisCookie / Cookie-Editor 插件导出的 <b>数组</b>
+              ② <code>{"cookies":[...]}</code>
+              ③ <code>name=val; name2=val2</code> 单行 header
+            </div>
+            <textarea id="v2CookieText" rows="6" style="width:100%;font-family:monospace;font-size:11px;box-sizing:border-box"
+              placeholder='[{"name":"web_session","value":"...","domain":".xiaohongshu.com",...}, ...]'></textarea>
+            <div class="actions" style="margin-top:6px">
+              <button class="secondary" id="v2CookieBtn" onclick="v2InjectCookies()">注入并验证</button>
+              <span id="v2CookieStatus" class="muted" style="font-size:12px"></span>
+            </div>
+          </div>
         </div>
 
         <div style="margin-bottom:10px;padding:8px;background:#f6fbf7;border-radius:6px">
@@ -527,6 +541,60 @@ function downloadAnalysis() {
 let v2Notes = [];
 function v2Esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function v2Out(obj){ document.getElementById('v2Out').textContent = typeof obj==='string'?obj:JSON.stringify(obj,null,2); }
+function v2ToggleCookieBox(){
+  const box = document.getElementById('v2CookieBox');
+  box.style.display = (box.style.display==='none' || !box.style.display) ? 'block' : 'none';
+}
+function v2NormalizeCookies(text){
+  text = (text||'').trim();
+  if(!text) throw new Error('请粘贴 cookie 内容');
+  // Try JSON first
+  try {
+    const parsed = JSON.parse(text);
+    if (Array.isArray(parsed)) return {cookies: parsed};
+    if (parsed && typeof parsed === 'object') {
+      if (Array.isArray(parsed.cookies)) return parsed;
+      // Single cookie object?
+      if (parsed.name && parsed.value) return {cookies: [parsed]};
+      // dict {name: value}
+      const arr = Object.entries(parsed).map(([k,v])=>({name:k,value:String(v),domain:'.xiaohongshu.com',path:'/'}));
+      return {cookies: arr};
+    }
+  } catch(_){}
+  // Fallback: header string "name=val; name2=val2"
+  if (text.includes('=')) {
+    const arr = text.split(/;\s*/).filter(Boolean).map(p=>{
+      const i = p.indexOf('='); if(i<0) return null;
+      return {name:p.slice(0,i).trim(), value:p.slice(i+1).trim(), domain:'.xiaohongshu.com', path:'/'};
+    }).filter(Boolean);
+    if(arr.length) return {cookies: arr};
+  }
+  throw new Error('无法识别 cookie 格式');
+}
+async function v2InjectCookies(){
+  const text = document.getElementById('v2CookieText').value;
+  const stat = document.getElementById('v2CookieStatus');
+  const btn = document.getElementById('v2CookieBtn');
+  let payload;
+  try { payload = v2NormalizeCookies(text); }
+  catch(e){ stat.innerHTML='<span style="color:#dc2626">'+v2Esc(e.message)+'</span>'; return; }
+  btn.disabled = true;
+  stat.innerHTML = '注入中（会打开 xhs 验证，约 5-10 秒）...';
+  try{
+    const r = await fetch(API + '/api/v1/auth/cookies/import', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const d = await r.json();
+    const data = d.data || {};
+    const ok = d.ok || data.logged_in;
+    stat.innerHTML = ok
+      ? `<span style="color:#16a34a">✅ 注入 ${d.injected||payload.cookies.length} 条，登录成功</span>`
+      : `<span style="color:#dc2626">⚠ 注入 ${d.injected||0} 条，但 ${v2Esc(d.message||'未通过验证')}</span>`;
+    v2Status();
+  } catch(e){ stat.innerHTML='<span style="color:#dc2626">异常：'+v2Esc(String(e))+'</span>'; }
+  finally { btn.disabled = false; }
+}
 async function v2Status(){
   try {
     const r = await fetch(API + '/api/v1/auth/login/debug?_=' + Date.now());
