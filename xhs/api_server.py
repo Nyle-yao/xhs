@@ -994,26 +994,39 @@ def raw_user_posted_all(req: UserPostedAllReq) -> dict[str, Any]:
                 for _ in range(20):
                     if pages_seen: break
                     page.wait_for_timeout(500)
+                import random as _rnd
                 last_count = -1
                 stable_rounds = 0
                 for round_i in range(req.max_pages):
-                    # check has_more on the most recent batch
                     if pages_seen:
                         last = pages_seen[-1]
                         has_more = ((last or {}).get("data") or {}).get("has_more", True)
                         if not has_more:
                             break
+                    # Human-like throttle BEFORE next scroll: read for 4-9s
+                    page.wait_for_timeout(_rnd.randint(4000, 9000))
+                    # Progressive scroll in 2-4 steps with small pauses, like a real reader
                     try:
+                        steps = _rnd.randint(2, 4)
+                        for _i in range(steps):
+                            page.evaluate(
+                                f"window.scrollBy(0, {_rnd.randint(400, 900)})"
+                            )
+                            page.wait_for_timeout(_rnd.randint(300, 900))
+                        # occasionally a tiny scroll-back, like adjusting position
+                        if _rnd.random() < 0.25:
+                            page.evaluate(f"window.scrollBy(0, -{_rnd.randint(60, 220)})")
+                            page.wait_for_timeout(_rnd.randint(300, 700))
+                        # finally make sure we're near the bottom to trigger load
                         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
                     except Exception:
                         pass
-                    # wait for another batch to arrive
+                    # wait up to 8s for the next batch
                     waited = 0
                     cur_count = len(pages_seen)
-                    while waited < 6000:
+                    while waited < 8000:
                         page.wait_for_timeout(500); waited += 500
                         if len(pages_seen) > cur_count: break
-                    # if no progress for 2 rounds in a row, stop
                     if len(pages_seen) == last_count:
                         stable_rounds += 1
                         if stable_rounds >= 2: break
