@@ -6,3 +6,39 @@ id = "vKPppWXJ2SvHqdtUAaLHc"
 uri = "file://xhs/outputs/user_posted_5f9c003c000000000100a069_20260421_190905.json"
 type = "unspecified"
 title = "黄金卢布道 - 全部 445 篇笔记 (JSON)"
+
+[[outputs]]
+id = "S5t4XF1Q3tu3U4aAm0nC-"
+uri = "file://xhs/outputs/notes_top5_5f9c003c_20260421_195406.json"
+type = "unspecified"
+title = "前 5 篇笔记 - 汇总 (5 in 1)"
+
+[[outputs]]
+id = "caQG4-bq00tC5x_R3JF2_"
+uri = "file://xhs/outputs/note_69cdb0ef000000002102d9b9_20260421_195329.json"
+type = "unspecified"
+title = "1. 4/2 | 灵活变通，灵活分析"
+
+[[outputs]]
+id = "F7BV2t3w6ZHf7GzhYaJwk"
+uri = "file://xhs/outputs/note_69ccfd3d0000000021011d3a_20260421_195338.json"
+type = "unspecified"
+title = "2. 不要倒在大黄回温阶段"
+
+[[outputs]]
+id = "X5kMiRRr7XyfZKuXzNlOb"
+uri = "file://xhs/outputs/note_69ccb2eb000000002102d67e_20260421_195347.json"
+type = "unspecified"
+title = "3. 算力的尽头是电力"
+
+[[outputs]]
+id = "_lsOIU67a1sFOF8szWbl2"
+uri = "file://xhs/outputs/note_69cc61ba00000000210395cb_20260421_195358.json"
+type = "unspecified"
+title = "4. 黄金现阶段的一些建议"
+
+[[outputs]]
+id = "-qJg7Iyr6wPFAqSQoqHV1"
+uri = "file://xhs/outputs/note_69cb6589000000002103a4b3_20260421_195406.json"
+type = "unspecified"
+title = "5. 有色金属，心态决定回报"
