@@ -770,6 +770,130 @@ def login_qr():
         return Response(content=str(e).encode("utf-8"), media_type="text/plain", status_code=500)
 
 
+class CookieImportReq(BaseModel):
+    cookies: Any
+    target_url: str = "https://www.xiaohongshu.com/explore"
+
+
+def _normalize_cookies(raw: Any) -> list[dict[str, Any]]:
+    """Accept Playwright/EditThisCookie array, JSON string, or 'name=val; ...' header."""
+    import json as _json
+    items: list[dict[str, Any]] = []
+    data = raw
+    if isinstance(data, str):
+        s = data.strip()
+        if s.startswith("[") or s.startswith("{"):
+            data = _json.loads(s)
+        else:
+            # Cookie header: name=val; name2=val2
+            for part in s.split(";"):
+                part = part.strip()
+                if not part or "=" not in part:
+                    continue
+                name, _, value = part.partition("=")
+                items.append({
+                    "name": name.strip(),
+                    "value": value.strip(),
+                    "domain": ".xiaohongshu.com",
+                    "path": "/",
+                })
+            return items
+    if isinstance(data, dict):
+        data = [data]
+    if not isinstance(data, list):
+        raise ValueError("cookies 必须是数组、对象或 'name=val; ...' 字符串")
+    for c in data:
+        if not isinstance(c, dict):
+            continue
+        name = c.get("name")
+        value = c.get("value")
+        if not name or value is None:
+            continue
+        domain = c.get("domain") or ".xiaohongshu.com"
+        if not domain.startswith(".") and "xiaohongshu.com" in domain and not domain.startswith("www"):
+            pass
+        item: dict[str, Any] = {
+            "name": str(name),
+            "value": str(value),
+            "domain": str(domain),
+            "path": str(c.get("path") or "/"),
+        }
+        # Optional fields Playwright accepts
+        if "expires" in c or "expirationDate" in c:
+            try:
+                exp = c.get("expires", c.get("expirationDate"))
+                item["expires"] = float(exp)
+            except Exception:
+                pass
+        if "httpOnly" in c:
+            item["httpOnly"] = bool(c["httpOnly"])
+        if "secure" in c:
+            item["secure"] = bool(c["secure"])
+        ss = c.get("sameSite")
+        if isinstance(ss, str):
+            m = ss.lower()
+            if m in ("no_restriction", "none", "unspecified"):
+                item["sameSite"] = "None"
+            elif m == "lax":
+                item["sameSite"] = "Lax"
+            elif m == "strict":
+                item["sameSite"] = "Strict"
+        items.append(item)
+    return items
+
+
+@app.post("/api/v1/auth/cookies/import")
+def cookies_import(req: CookieImportReq) -> dict[str, Any]:
+    """Inject user-provided cookies into the persistent browser, then verify login."""
+    try:
+        normalized = _normalize_cookies(req.cookies)
+    except Exception as e:
+        return {"ok": False, "message": f"cookie 解析失败：{e}"}
+    if not normalized:
+        return {"ok": False, "message": "未解析到任何 cookie"}
+
+    def _do():
+        with service.lock:
+            scraper = service.get_persistent_scraper()
+            scraper.start()
+            ctx = scraper.context
+            try:
+                ctx.add_cookies(normalized)
+            except Exception as e:
+                return {"ok": False, "message": f"注入 cookie 失败：{e}", "data": None}
+            page = ctx.pages[0] if ctx.pages else ctx.new_page()
+            try:
+                page.goto(req.target_url, timeout=30000, wait_until="domcontentloaded")
+                page.wait_for_timeout(1500)
+            except Exception:
+                pass
+            res = scraper.login_debug_snapshot()
+            return {
+                "ok": bool(res.ok and (res.data or {}).get("logged_in")),
+                "message": res.message,
+                "data": res.data,
+                "injected": len(normalized),
+            }
+    try:
+        return service.run_pw(_do)
+    except Exception as e:
+        return {"ok": False, "message": f"cookie 登录失败：{e}"}
+
+
+@app.post("/api/v1/auth/cookies/clear")
+def cookies_clear() -> dict[str, Any]:
+    def _do():
+        with service.lock:
+            scraper = service.get_persistent_scraper()
+            scraper.start()
+            try:
+                scraper.context.clear_cookies()
+                return {"ok": True, "message": "已清空当前浏览器 cookie"}
+            except Exception as e:
+                return {"ok": False, "message": f"清空 cookie 失败：{e}"}
+    return service.run_pw(_do)
+
+
 @app.get("/api/v1/auth/login/debug")
 def login_debug() -> dict[str, Any]:
     def _do():

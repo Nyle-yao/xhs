@@ -118,6 +118,21 @@
           <button class="secondary" onclick="analyzeLatest()">识别分析</button>
         </div>
         <div class="note muted">先点“打开登录页/获取二维码”，下方会显示小红书登录页二维码（每 4 秒自动刷新）；用手机小红书 App 扫码登录后，再点“检测登录”。登录成功后再点“开始爬取”。</div>
+        <div style="margin-top:12px;border:1px solid #ddd;padding:10px;border-radius:6px;background:#fff8e1">
+          <div style="margin-bottom:6px"><strong>用 Cookie 登录（推荐，可绕过当前服务器 IP 风控）</strong></div>
+          <div class="muted" style="font-size:12px;margin-bottom:6px">
+            操作步骤：<br/>
+            1) 在你自己的电脑上用 Chrome/Edge 打开 <code>https://www.xiaohongshu.com</code> 并正常登录<br/>
+            2) 按 <code>F12</code> 打开开发者工具 → Application/应用 → Storage → Cookies → <code>https://www.xiaohongshu.com</code><br/>
+            3) 装一个 "EditThisCookie" / "Cookie-Editor" 浏览器扩展，点 Export → JSON，复制全部内容粘到下方<br/>
+            （也可以直接粘 <code>document.cookie</code> 那种 <code>name1=val1; name2=val2; ...</code> 字符串）
+          </div>
+          <textarea id="cookieInput" rows="5" style="width:100%;font-family:monospace;font-size:12px" placeholder='[{"name":"web_session","value":"...","domain":".xiaohongshu.com",...}, ...]'></textarea>
+          <div class="actions" style="margin-top:6px">
+            <button class="secondary" onclick="importCookies()">导入 Cookie 并验证登录</button>
+            <button class="light" onclick="clearCookies()">清空当前 Cookie</button>
+          </div>
+        </div>
         <div id="qrBox" style="margin-top:12px;display:none;border:1px solid #ddd;padding:8px;border-radius:6px;background:#fafafa">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
             <strong>登录页快照（每 4 秒刷新）</strong>
@@ -269,6 +284,31 @@ async function openLoginQR() {
   } catch(e) { setStatus('打开登录页失败：' + e.message); }
 }
 function stopQR() { if (qrTimer) { clearInterval(qrTimer); qrTimer = null; } }
+async function importCookies() {
+  const raw = (document.getElementById('cookieInput').value || '').trim();
+  if (!raw) { setStatus('请先粘贴 cookie 内容'); return; }
+  setStatus('正在注入 cookie 并验证登录...');
+  try {
+    const r = await fetch(API + '/api/v1/auth/cookies/import', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({cookies: raw})
+    });
+    const j = await r.json();
+    const d = j.data || {};
+    setStatus((j.ok ? '✅ Cookie 登录成功：' : '⚠️ Cookie 已注入但未识别为已登录：')
+      + (j.message || '')
+      + '\n注入条数：' + (j.injected || 0)
+      + '\n当前地址：' + (d.url || '')
+      + '\nCookie 名称：' + ((d.cookie_names || []).join(', ')));
+  } catch(e) { setStatus('Cookie 登录失败：' + e.message); }
+}
+async function clearCookies() {
+  try {
+    const r = await fetch(API + '/api/v1/auth/cookies/clear', {method:'POST'});
+    const j = await r.json();
+    setStatus(j.message || JSON.stringify(j));
+  } catch(e) { setStatus('清空失败：' + e.message); }
+}
 async function loginCheck() {
   try {
     setStatus('正在打开/检测小红书登录状态。若弹出浏览器，请扫码登录，最多等待 180 秒...');
