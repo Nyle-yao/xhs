@@ -178,8 +178,24 @@ def _bundle_sheets(data: dict) -> dict[str, pd.DataFrame]:
         "源链接": (params.get("user_url_or_id") or "")[:200],
     }])
 
-    # Sheet 2: 笔记列表（综合：列表 + 详情）
+    # 预先抽取每篇的图片/视频 URL（既给 笔记表 当合并列，也给 图片表 当行源）
+    def _extract_media(d: dict) -> tuple[list[str], list[dict]]:
+        imgs: list[str] = []
+        for im in (d.get("image_list") or []):
+            if isinstance(im, dict):
+                u = im.get("url_default") or im.get("urlDefault") or im.get("url") or ""
+            else:
+                u = str(im)
+            if u: imgs.append(u)
+        vids: list[dict] = []
+        for v in (d.get("video_urls") or []):
+            if isinstance(v, dict) and v.get("url"):
+                vids.append({"quality": v.get("quality", ""), "url": v.get("url", "")})
+        return imgs, vids
+
+    # Sheet 2: 笔记表（综合：列表 + 详情 + 图片URL 合并列）
     note_rows = []
+    media_cache: dict[str, tuple[list[str], list[dict]]] = {}
     for i, n in enumerate(notes, 1):
         nid = n.get("note_id") or n.get("id") or ""
         u = n.get("user") or {}
@@ -188,12 +204,14 @@ def _bundle_sheets(data: dict) -> dict[str, pd.DataFrame]:
         d_ii = d.get("interact") or {}
         d_user = d.get("user") or {}
         tok = n.get("xsec_token") or d_user.get("xsec_token") or ""
+        imgs, vids = _extract_media(d)
+        media_cache[nid] = (imgs, vids)
         note_rows.append({
             "序号": i,
             "笔记ID": nid,
             "标题": d.get("title") or n.get("display_title", ""),
             "类型": d.get("type") or n.get("type", ""),
-            "正文摘要": (d.get("desc") or "")[:120],
+            "完整正文": d.get("desc", ""),
             "发布时间": _ts(d.get("time")),
             "更新时间": _ts(d.get("last_update_time")),
             "IP归属": d.get("ip_location", ""),
@@ -205,60 +223,38 @@ def _bundle_sheets(data: dict) -> dict[str, pd.DataFrame]:
                 (t.get("name") if isinstance(t, dict) else str(t))
                 for t in (d.get("tag_list") or [])
             ),
-            "实抓评论数": len((comments_map.get(nid) or {}).get("comments") or []),
-            "封面URL": _pick_cover_url(n),
-            "笔记链接": f"https://www.xiaohongshu.com/explore/{nid}?xsec_token={tok}&xsec_source=pc_user" if nid else "",
-            "用户昵称": u.get("nick_name") or u.get("nickname") or d_user.get("nickname") or "",
-            "用户ID": u.get("user_id") or u.get("userId") or d_user.get("user_id") or "",
-            "失败原因": errors.get(nid, ""),
-        })
-    notes_df = pd.DataFrame(note_rows)
-
-    # Sheet 3: 笔记正文（完整 desc）
-    body_rows = []
-    for i, n in enumerate(notes, 1):
-        nid = n.get("note_id") or n.get("id") or ""
-        d = details.get(nid) or {}
-        body_rows.append({
-            "序号": i,
-            "笔记ID": nid,
-            "标题": d.get("title") or n.get("display_title", ""),
-            "完整正文": d.get("desc", ""),
-            "话题标签": " | ".join(
-                (t.get("name") if isinstance(t, dict) else str(t))
-                for t in (d.get("tag_list") or [])
-            ),
             "@用户": " | ".join(
                 (a.get("nickname") if isinstance(a, dict) else str(a))
                 for a in (d.get("at_user_list") or [])
             ),
+            "实抓评论数": len((comments_map.get(nid) or {}).get("comments") or []),
+            "图片数": len(imgs),
+            "视频数": len(vids),
+            "封面URL": _pick_cover_url(n),
+            "图片URL列表": "\n".join(imgs),
+            "视频URL列表": "\n".join(v["url"] for v in vids),
+            "笔记链接": f"https://www.xiaohongshu.com/explore/{nid}?xsec_token={tok}&xsec_source=pc_user" if nid else "",
+            "用户昵称": u.get("nick_name") or u.get("nickname") or d_user.get("nickname") or "",
+            "用户ID": u.get("user_id") or u.get("userId") or d_user.get("user_id") or "",
         })
-    body_df = pd.DataFrame(body_rows)
+    notes_df = pd.DataFrame(note_rows)
 
-    # Sheet 4: 图片汇总（一图一行）
+    # Sheet 3: 图片表（一图/一视频一行；含笔记内全部媒体）
     img_rows = []
     for n in notes:
         nid = n.get("note_id") or n.get("id") or ""
         d = details.get(nid) or {}
         title = d.get("title") or n.get("display_title", "")
-        for j, im in enumerate(d.get("image_list") or [], 1):
-            url = ""
-            if isinstance(im, dict):
-                url = im.get("url_default") or im.get("urlDefault") or im.get("url") or ""
-            elif isinstance(im, str):
-                url = im
-            img_rows.append({
-                "笔记ID": nid, "笔记标题": title, "类型": "图片",
-                "序号": j, "URL": url,
-            })
-        for j, v in enumerate(d.get("video_urls") or [], 1):
-            img_rows.append({
-                "笔记ID": nid, "笔记标题": title, "类型": f"视频-{v.get('quality','')}",
-                "序号": j, "URL": v.get("url", ""),
-            })
+        imgs, vids = media_cache.get(nid, _extract_media(d))
+        for j, url in enumerate(imgs, 1):
+            img_rows.append({"笔记ID": nid, "笔记标题": title, "类型": "图片", "序号": j, "URL": url})
+        for j, v in enumerate(vids, 1):
+            img_rows.append({"笔记ID": nid, "笔记标题": title,
+                             "类型": f"视频-{v.get('quality','')}".rstrip("-"),
+                             "序号": j, "URL": v["url"]})
     img_df = pd.DataFrame(img_rows) if img_rows else pd.DataFrame(columns=["笔记ID","笔记标题","类型","序号","URL"])
 
-    # Sheet 5: 全部评论（含子评论，跨笔记汇总）
+    # Sheet 4: 评论表（含子评论，跨笔记汇总）
     cmt_rows = []
     for n in notes:
         nid = n.get("note_id") or n.get("id") or ""
@@ -297,12 +293,23 @@ def _bundle_sheets(data: dict) -> dict[str, pd.DataFrame]:
     cmt_df = pd.DataFrame(cmt_rows) if cmt_rows else pd.DataFrame(
         columns=["笔记ID","笔记标题","评论ID","父评论ID","层级","用户昵称","用户ID","评论内容","点赞数","评论时间","IP归属","子评论数","图片附件"])
 
+    # Sheet 5: 失败记录
+    err_rows = []
+    for nid, msg in (errors or {}).items():
+        title = ""
+        for n in notes:
+            if (n.get("note_id") or n.get("id")) == nid:
+                title = (details.get(nid) or {}).get("title") or n.get("display_title", "")
+                break
+        err_rows.append({"笔记ID": nid, "笔记标题": title, "失败原因": str(msg)})
+    err_df = pd.DataFrame(err_rows) if err_rows else pd.DataFrame(columns=["笔记ID","笔记标题","失败原因"])
+
     return {
-        "概览": overview,
-        "笔记列表": notes_df,
-        "笔记正文": body_df,
-        "图片视频": img_df,
-        "全部评论": cmt_df,
+        "博主表": overview,
+        "笔记表": notes_df,
+        "图片表": img_df,
+        "评论表": cmt_df,
+        "失败记录": err_df,
     }
 
 
