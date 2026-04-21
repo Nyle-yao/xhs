@@ -137,6 +137,29 @@ def upsert_comments(file: Path, result: dict, params: dict) -> dict:
     return _upsert(rec)
 
 
+def upsert_bundle(file: Path, result: dict, params: dict) -> dict:
+    user = result.get("user") or {}
+    nickname = user.get("nickname") or ""
+    stats = result.get("stats") or {}
+    n_notes = stats.get("notes", 0)
+    n_cmts = stats.get("comments_total", 0)
+    label = f"{nickname or '?'}_一键全量_{n_notes}篇_{n_cmts}评论"
+    rec = {
+        "id": file.stem,
+        "kind": "bundle",
+        "label": label,
+        "nickname": nickname,
+        "user_id": user.get("user_id", ""),
+        "note_id": "",
+        "count": n_notes,
+        "captured_at": int(result.get("scrape_time") or time.time()),
+        "file": file.name,
+        "params": params,
+        "extra": {"comments_total": n_cmts, "errors": stats.get("errors", 0)},
+    }
+    return _upsert(rec)
+
+
 def _upsert(rec: dict) -> dict:
     with _LOCK:
         items = _load()

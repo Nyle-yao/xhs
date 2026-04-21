@@ -108,8 +108,39 @@
           <div id="v2Records" style="margin-top:6px;font-size:12px">加载中...</div>
         </div>
 
+        <div style="margin-bottom:10px;padding:10px;background:#fff8e6;border:2px solid #f59e0b;border-radius:8px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <strong style="font-size:14px;color:#b45309">🚀 一键全量抓取</strong>
+            <span class="muted" style="font-size:11px">笔记列表 + 每篇详情 + 每篇评论 → 单个 Excel + HTML 报告</span>
+          </div>
+          <input id="ocUrl" style="width:100%;font-family:monospace;font-size:12px;margin-top:6px"
+                 placeholder="https://www.xiaohongshu.com/user/profile/<id>?xsec_token=...&xsec_source=pc_search" />
+          <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+            <label style="font-size:12px">最多 <input id="ocMaxNotes" type="number" min="1" max="500" value="20" style="width:60px"/> 篇笔记</label>
+            <label style="font-size:12px">每篇 <input id="ocMaxCmts" type="number" min="0" max="500" value="20" style="width:60px"/> 条评论</label>
+            <button class="secondary" id="ocStartBtn" onclick="ocStart()" style="background:#f59e0b">🚀 开始一键抓取</button>
+            <span id="ocStatus" class="muted" style="font-size:12px"></span>
+          </div>
+          <div id="ocProgressBox" style="display:none;margin-top:8px;padding:8px;background:#fff;border-radius:6px;border:1px solid #fde68a">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+              <span id="ocStep" style="font-weight:600">准备中…</span>
+              <span id="ocCounts" class="muted"></span>
+            </div>
+            <div style="height:8px;background:#fde68a;border-radius:4px;overflow:hidden">
+              <div id="ocBar" style="height:100%;width:0%;background:linear-gradient(90deg,#f59e0b,#16a34a);transition:width .3s"></div>
+            </div>
+            <details style="margin-top:6px;font-size:11px">
+              <summary style="cursor:pointer;color:#888">日志</summary>
+              <pre id="ocLog" style="max-height:140px;overflow:auto;background:#f9fafb;padding:6px;border-radius:4px;margin:4px 0 0;font-size:10px;white-space:pre-wrap"></pre>
+            </details>
+          </div>
+          <div style="font-size:11px;color:#92400e;margin-top:6px">
+            ⏱ 估时：每篇约 <b>30–60 秒</b>（详情 ~3s + 评论滚动 ~30s）。20 篇×20 条 ≈ 10–15 分钟。完成后可在 ④ 直接看可视化报告 / 下载 Excel。
+          </div>
+        </div>
+
         <div style="margin-bottom:10px;padding:8px;background:#f6fbf7;border-radius:6px">
-          <div><strong>② 抓取用户全部笔记</strong></div>
+          <div><strong>② 抓取用户全部笔记</strong> <span class="muted" style="font-size:11px">（仅笔记列表，不含详情/评论）</span></div>
           <input id="v2UserUrl" style="width:100%;font-family:monospace;font-size:12px;margin-top:4px" placeholder="https://www.xiaohongshu.com/user/profile/<id>?xsec_token=...&xsec_source=pc_search" />
           <div class="actions" style="margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center">
             <label style="font-size:12px">最多抓取
@@ -635,6 +666,63 @@ function v2Out(obj){
   tabs.style.display='inline-flex';
   v2OutShow('viz'); // default = visualization
 }
+// ===== One-click bundle =====
+let ocPoll = null;
+async function ocStart(){
+  const url = (document.getElementById('ocUrl').value||'').trim();
+  if(!url){ alert('请输入用户主页链接'); return; }
+  const mn = parseInt(document.getElementById('ocMaxNotes').value)||20;
+  const mc = parseInt(document.getElementById('ocMaxCmts').value);
+  const mcEff = isNaN(mc) ? 20 : Math.max(0, mc);
+  const btn = document.getElementById('ocStartBtn');
+  const stat = document.getElementById('ocStatus');
+  const box = document.getElementById('ocProgressBox');
+  btn.disabled = true; stat.textContent = '提交任务...';
+  try{
+    const r = await fetch(API + '/api/v1/oneclick/start', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({user_url_or_id:url, max_notes:mn, max_comments:mcEff})
+    });
+    const d = await r.json();
+    if(!d.ok){ stat.innerHTML='<span style="color:#dc2626">启动失败：'+v2Esc(d.error||'?')+'</span>'; btn.disabled=false; return; }
+    stat.innerHTML = '<span style="color:#16a34a">已启动 · job '+d.job_id+'</span>';
+    box.style.display='block';
+    if(ocPoll) clearInterval(ocPoll);
+    ocPoll = setInterval(()=>ocPollOnce(d.job_id, btn), 2000);
+    ocPollOnce(d.job_id, btn);
+  } catch(e){
+    stat.innerHTML='<span style="color:#dc2626">异常：'+v2Esc(String(e))+'</span>'; btn.disabled=false;
+  }
+}
+async function ocPollOnce(jid, btn){
+  try{
+    const r = await fetch(API + '/api/v1/oneclick/status/'+jid+'?_='+Date.now());
+    const d = await r.json();
+    if(!d.ok || !d.job){ return; }
+    const j = d.job;
+    document.getElementById('ocStep').textContent = j.step || j.status;
+    const p = j.progress||{};
+    const total = p.notes_total||0, done = p.notes_done||0, cmts = p.comments_done||0;
+    document.getElementById('ocCounts').textContent = total ? (done+'/'+total+' 篇 · '+cmts+' 条评论') : '';
+    const pct = total>0 ? Math.round(done/total*100) : (j.status==='running'?5:0);
+    document.getElementById('ocBar').style.width = pct + '%';
+    document.getElementById('ocLog').textContent = (j.log||[]).join('\n');
+    if(j.status==='done'){
+      clearInterval(ocPoll); ocPoll=null; btn.disabled=false;
+      document.getElementById('ocBar').style.width='100%';
+      document.getElementById('ocStatus').innerHTML =
+        '<span style="color:#16a34a;font-weight:600">✅ 完成 → '+v2Esc(j.file)+'</span>';
+      // Auto-render bundle in ④ panel + refresh lists
+      v2Out({ok:true, saved_to:j.saved_to, user:{nickname:''}, total_notes:p.notes_done});
+      v2Refresh(); v2RecRefresh();
+    } else if(j.status==='failed'){
+      clearInterval(ocPoll); ocPoll=null; btn.disabled=false;
+      document.getElementById('ocStatus').innerHTML =
+        '<span style="color:#dc2626;font-weight:600">❌ '+v2Esc(j.error||'失败')+'</span>';
+    }
+  } catch(e){ /* ignore transient poll errors */ }
+}
+
 function v2ToggleCookieBox(){
   const box = document.getElementById('v2CookieBox');
   box.style.display = (box.style.display==='none' || !box.style.display) ? 'block' : 'none';
@@ -793,7 +881,7 @@ async function v2Refresh(){
     box.innerHTML = '<div style="max-height:200px;overflow:auto"><table style="width:100%;font-size:12px;border-collapse:collapse">'
       + '<thead><tr style="background:#f3f4f6"><th style="padding:4px;text-align:left">类型</th><th style="padding:4px;text-align:left">文件名</th><th style="padding:4px;text-align:right">大小</th><th style="padding:4px;text-align:left">操作</th></tr></thead><tbody>'
       + d.files.map(f=>{
-          const kind = ({user_posts:'📋全部笔记', comments:'💬评论', note:'📝笔记详情', notes_top5:'⭐前5'}[f.kind]) || f.kind;
+          const kind = ({user_posts:'📋全部笔记', comments:'💬评论', note:'📝笔记详情', notes_top5:'⭐前5', bundle:'🚀全量报告'}[f.kind]) || f.kind;
           const sz = f.size>1024 ? (f.size/1024).toFixed(1)+'KB' : f.size+'B';
           const url = API + '/api/v1/outputs/' + encodeURIComponent(f.name);
           const viewUrl = API + '/api/v1/view/' + encodeURIComponent(f.name);
@@ -828,7 +916,7 @@ async function v2RecRefresh(){
     const d = await r.json();
     const recs = d.records || [];
     if (!recs.length) { box.innerHTML = '<i class="muted">还没有抓取记录</i>'; return; }
-    const KIND = {user_posts:{ico:'📋',col:'#16a34a'}, note:{ico:'📝',col:'#1d4ed8'}, comments:{ico:'💬',col:'#a16207'}};
+    const KIND = {user_posts:{ico:'📋',col:'#16a34a'}, note:{ico:'📝',col:'#1d4ed8'}, comments:{ico:'💬',col:'#a16207'}, bundle:{ico:'🚀',col:'#b45309'}};
     box.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:6px">' + recs.map(r=>{
       const k = KIND[r.kind] || {ico:'📄',col:'#666'};
       const ago = v2FmtAgo(r.captured_at);

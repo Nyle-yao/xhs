@@ -456,6 +456,7 @@ def list_outputs() -> dict[str, Any]:
                 "comments"   if fp.name.startswith("comments_")    else
                 "note"       if fp.name.startswith("note_")        else
                 "notes_top5" if fp.name.startswith("notes_top5_")  else
+                "bundle"     if fp.name.startswith("bundle_")      else
                 "other"
             )
             items.append({
@@ -523,6 +524,10 @@ def list_records() -> dict[str, Any]:
             elif fp.name.startswith("comments_"):
                 rec.upsert_comments(fp, data, {})
                 backfilled += 1
+            elif fp.name.startswith("bundle_"):
+                if hasattr(rec, "upsert_bundle"):
+                    rec.upsert_bundle(fp, data, data.get("params") or {})
+                    backfilled += 1
         except Exception:
             continue
     if backfilled:
@@ -535,6 +540,63 @@ def delete_record(rec_id: str, with_file: bool = False) -> dict[str, Any]:
     rec = _records_module()
     ok = rec.delete_record(rec_id, also_file=with_file)
     return {"ok": ok}
+
+
+def _oneclick_module():
+    try:
+        from . import oneclick as _oc  # type: ignore
+        return _oc
+    except Exception:
+        import importlib.util as _u, sys as _s
+        from pathlib import Path as _P
+        spec = _u.spec_from_file_location("xhs_oneclick", _P(__file__).parent / "oneclick.py")
+        _oc = _u.module_from_spec(spec); _s.modules["xhs_oneclick"] = _oc
+        spec.loader.exec_module(_oc)  # type: ignore
+        return _oc
+
+
+class OneClickReq(BaseModel):
+    user_url_or_id: str
+    max_notes: int = 20
+    max_comments: int = 20
+
+
+@app.post("/api/v1/oneclick/start")
+def oneclick_start(req: OneClickReq) -> dict[str, Any]:
+    """Kick off a background full-pipeline scrape; returns job_id immediately."""
+    from pathlib import Path as _P
+    oc = _oneclick_module()
+    rec = _records_module()
+    outdir = _P(__file__).resolve().parent / "outputs"
+    jid = oc.start(
+        user_url=req.user_url_or_id,
+        max_notes=max(0, int(req.max_notes or 0)),
+        max_comments=max(0, int(req.max_comments or 0)),
+        raw_user_posted_all=raw_user_posted_all,
+        UserPostedAllReq=UserPostedAllReq,
+        raw_note_detail=raw_note_detail,
+        NoteDetailReq=NoteDetailReq,
+        raw_comments=raw_comments,
+        CommentsReq=CommentsReq,
+        outdir=outdir,
+        upsert_bundle=getattr(rec, "upsert_bundle", None),
+    )
+    return {"ok": True, "job_id": jid}
+
+
+@app.get("/api/v1/oneclick/status/{job_id}")
+def oneclick_status(job_id: str) -> dict[str, Any]:
+    oc = _oneclick_module()
+    j = oc.get_job(job_id)
+    if not j:
+        return {"ok": False, "error": "job not found"}
+    return {"ok": True, "job": j}
+
+
+@app.get("/api/v1/oneclick/jobs")
+def oneclick_jobs() -> dict[str, Any]:
+    oc = _oneclick_module()
+    return {"ok": True, "jobs": oc.list_jobs()}
 
 
 @app.get("/api/v1/export/{name}")

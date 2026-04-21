@@ -318,6 +318,140 @@ def render_top5(data: Any, name: str) -> str:
     return _wrap("前 5 笔记", head + f'<div class="grid">{"".join(cards)}</div>')
 
 
+def render_bundle(data: dict, name: str) -> str:
+    """One-click full report: overview + per-note section (detail + comments)."""
+    user = data.get("user") or {}
+    stats = data.get("stats") or {}
+    params = data.get("params") or {}
+    notes = data.get("notes") or []
+    details = data.get("details") or {}
+    comments_map = data.get("comments") or {}
+    errors = data.get("errors") or {}
+
+    # Overview header
+    head = f"""<div class="head">
+      <a href="/" class="back">← 返回仪表盘</a>
+      <h1>🚀 一键全量报告 — {_esc(user.get('nickname','?'))}</h1>
+      <div class="meta">
+        采集时间 {_fmt_ts(data.get('scrape_time'))} · user_id <code>{_esc(user.get('user_id',''))}</code><br/>
+        共 <b>{stats.get('notes',0)}</b> 篇笔记 ·
+        详情成功 <b>{stats.get('details_ok',0)}</b> ·
+        评论成功 <b>{stats.get('comments_ok',0)}</b> ·
+        评论合计 <b>{stats.get('comments_total',0)}</b> 条 ·
+        失败 <b style="color:#dc2626">{stats.get('errors',0)}</b><br/>
+        参数：max_notes={params.get('max_notes',0) or '全部'} · max_comments={params.get('max_comments',0)}<br/>
+        <span class="tag">来源 {_esc(name)}</span>
+      </div>
+    </div>"""
+
+    # Table of contents
+    toc_items = []
+    for i, n in enumerate(notes, 1):
+        nid = n.get("note_id") or n.get("id") or ""
+        title = (details.get(nid) or {}).get("title") or n.get("display_title") or "(无标题)"
+        cn = len((comments_map.get(nid) or {}).get("comments") or [])
+        toc_items.append(
+            f'<li><a href="#n{i}" style="color:#1f6feb;text-decoration:none">'
+            f'#{i} {_esc(title[:38])}</a> '
+            f'<span style="color:#888;font-size:12px">· 评论 {cn}</span></li>'
+        )
+    toc = (
+        '<div style="background:#fff;padding:12px 18px;border-radius:10px;margin-bottom:14px">'
+        '<b>📑 目录</b>'
+        f'<ul style="columns:2;font-size:13px;margin:6px 0 0;padding-left:20px">{"".join(toc_items)}</ul>'
+        '</div>'
+    )
+
+    # Per-note sections
+    sections = []
+    for i, n in enumerate(notes, 1):
+        nid = n.get("note_id") or n.get("id") or ""
+        d = details.get(nid) or {}
+        cms = (comments_map.get(nid) or {}).get("comments") or []
+        title = d.get("title") or n.get("display_title") or "(无标题)"
+        d_ii = d.get("interact") or {}
+        d_user = d.get("user") or {}
+        tok = n.get("xsec_token") or d_user.get("xsec_token") or ""
+        ext = f"https://www.xiaohongshu.com/explore/{nid}?xsec_token={tok}&xsec_source=pc_user" if nid else "#"
+        err = errors.get(nid, "")
+
+        # cover thumb
+        cover = _pick_cover(n) or ""
+        if not cover and (d.get("image_list") or []):
+            im0 = d["image_list"][0]
+            if isinstance(im0, dict):
+                cover = im0.get("url_default") or im0.get("urlDefault") or ""
+
+        # comments html
+        cmt_html = []
+        for c in cms[:200]:
+            cu = c.get("user") or {}
+            content = _esc(c.get("content", "")).replace("\n", "<br/>")
+            pics_html = "".join(
+                f'<img src="{_esc(p.get("url_default") or p.get("url",""))}" '
+                'loading="lazy" referrerpolicy="no-referrer"/>'
+                for p in (c.get("pictures") or []) if (p.get("url_default") or p.get("url"))
+            )
+            sub_html = ""
+            if c.get("sub_comments"):
+                sub_items = []
+                for sc in c["sub_comments"][:10]:
+                    su = sc.get("user") or {}
+                    sub_items.append(
+                        f'<div class="s"><span class="nm">{_esc(su.get("nickname",""))}</span>：'
+                        f'{_esc(sc.get("content",""))} <span style="color:#aaa">· ♡{sc.get("like_count",0)}</span></div>'
+                    )
+                sub_html = f'<div class="sub">{"".join(sub_items)}</div>'
+            cmt_html.append(f"""
+            <div class="cmt">
+              <img class="av" src="{_esc(cu.get('image',''))}" referrerpolicy="no-referrer" data-zoom="no"/>
+              <div class="cb">
+                <div class="nm">{_esc(cu.get('nickname',''))}
+                  <span style="color:#aaa;font-weight:400;font-size:11px">· {_fmt_ts(c.get('create_time'))} · {_esc(c.get('ip_location',''))}</span>
+                </div>
+                <div class="ct">{content}</div>
+                {f'<div class="pics">{pics_html}</div>' if pics_html else ''}
+                <div class="mt"><span class="lk">♡ {c.get('like_count',0)}</span></div>
+                {sub_html}
+              </div>
+            </div>""")
+        cmt_block = ("".join(cmt_html)
+                     or '<div style="color:#999;padding:10px">(无评论数据)</div>')
+
+        err_html = (f'<div style="background:#fef2f2;color:#991b1b;padding:6px 10px;border-radius:6px;'
+                    f'margin:6px 0;font-size:12px">⚠️ {_esc(err)}</div>') if err else ""
+
+        sections.append(f"""
+        <section id="n{i}" style="background:#fff;border-radius:10px;margin-bottom:14px;padding:14px 18px;scroll-margin-top:10px">
+          <h2 style="margin:0 0 8px;font-size:18px;display:flex;gap:10px;align-items:center">
+            <span style="background:#eff6ff;color:#1f6feb;padding:2px 10px;border-radius:12px;font-size:13px">#{i}</span>
+            <a href="{_esc(ext)}" target="_blank" rel="noreferrer"
+               style="color:#111;text-decoration:none">{_esc(title)}</a>
+          </h2>
+          <div style="display:grid;grid-template-columns:160px 1fr;gap:14px;margin-bottom:8px">
+            <a href="{_esc(ext)}" target="_blank">{_img(cover, **{'class':'','data-zoom':'no','style':'width:160px;height:160px;object-fit:cover;border-radius:8px;background:#eee'})}</a>
+            <div style="font-size:13px;color:#444">
+              <div style="white-space:pre-wrap;line-height:1.6;max-height:160px;overflow:auto">{_esc(d.get('desc','(无正文)'))}</div>
+              <div style="margin-top:6px;color:#888;font-size:12px">
+                ♡ {d_ii.get('liked_count','-')} · ⭐ {d_ii.get('collected_count','-')} ·
+                💬 {d_ii.get('comment_count','-')} · 📤 {d_ii.get('share_count','-')} ·
+                {_fmt_ts(d.get('time'))} · {_esc(d.get('ip_location',''))}
+              </div>
+            </div>
+          </div>
+          {err_html}
+          <details {"open" if i <= 3 else ""}>
+            <summary style="cursor:pointer;color:#16a34a;font-weight:600;margin:6px 0">
+              💬 评论 ({len(cms)} 条)
+            </summary>
+            <div style="margin-top:8px">{cmt_block}</div>
+          </details>
+        </section>""")
+
+    return _wrap(f"一键全量 - {user.get('nickname','?')}",
+                 head + toc + "".join(sections))
+
+
 def render_raw(data: Any, name: str) -> str:
     pretty = json.dumps(data, ensure_ascii=False, indent=2)
     head = f"""<div class="head">
@@ -338,4 +472,6 @@ def render(name: str, path: Path) -> str:
         return render_comments(data, name)
     if name.startswith("notes_top5_"):
         return render_top5(data, name)
+    if name.startswith("bundle_"):
+        return render_bundle(data, name)
     return render_raw(data, name)

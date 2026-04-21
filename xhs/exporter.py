@@ -154,6 +154,158 @@ def _autosize(writer, sheet_name: str, df: pd.DataFrame) -> None:
         pass
 
 
+def _bundle_sheets(data: dict) -> dict[str, pd.DataFrame]:
+    user = data.get("user") or {}
+    stats = data.get("stats") or {}
+    params = data.get("params") or {}
+    notes = data.get("notes") or []
+    details = data.get("details") or {}
+    comments_map = data.get("comments") or {}
+    errors = data.get("errors") or {}
+
+    # Sheet 1: 概览
+    overview = pd.DataFrame([{
+        "博主昵称": user.get("nickname", ""),
+        "用户ID": user.get("user_id", ""),
+        "采集时间": _ts(data.get("scrape_time")),
+        "目标笔记数": params.get("max_notes", 0) or "全部",
+        "每篇评论数": params.get("max_comments", 0),
+        "实际抓取笔记": stats.get("notes", 0),
+        "成功获取详情": stats.get("details_ok", 0),
+        "成功获取评论": stats.get("comments_ok", 0),
+        "评论总条数": stats.get("comments_total", 0),
+        "失败笔记数": stats.get("errors", 0),
+        "源链接": (params.get("user_url_or_id") or "")[:200],
+    }])
+
+    # Sheet 2: 笔记列表（综合：列表 + 详情）
+    note_rows = []
+    for i, n in enumerate(notes, 1):
+        nid = n.get("note_id") or n.get("id") or ""
+        u = n.get("user") or {}
+        ii = n.get("interact_info") or {}
+        d = details.get(nid) or {}
+        d_ii = d.get("interact") or {}
+        d_user = d.get("user") or {}
+        tok = n.get("xsec_token") or d_user.get("xsec_token") or ""
+        note_rows.append({
+            "序号": i,
+            "笔记ID": nid,
+            "标题": d.get("title") or n.get("display_title", ""),
+            "类型": d.get("type") or n.get("type", ""),
+            "正文摘要": (d.get("desc") or "")[:120],
+            "发布时间": _ts(d.get("time")),
+            "更新时间": _ts(d.get("last_update_time")),
+            "IP归属": d.get("ip_location", ""),
+            "点赞数": d_ii.get("liked_count") or ii.get("liked_count") or 0,
+            "收藏数": d_ii.get("collected_count") or 0,
+            "评论数": d_ii.get("comment_count") or 0,
+            "分享数": d_ii.get("share_count") or 0,
+            "话题标签": " | ".join(
+                (t.get("name") if isinstance(t, dict) else str(t))
+                for t in (d.get("tag_list") or [])
+            ),
+            "实抓评论数": len((comments_map.get(nid) or {}).get("comments") or []),
+            "封面URL": _pick_cover_url(n),
+            "笔记链接": f"https://www.xiaohongshu.com/explore/{nid}?xsec_token={tok}&xsec_source=pc_user" if nid else "",
+            "用户昵称": u.get("nick_name") or u.get("nickname") or d_user.get("nickname") or "",
+            "用户ID": u.get("user_id") or u.get("userId") or d_user.get("user_id") or "",
+            "失败原因": errors.get(nid, ""),
+        })
+    notes_df = pd.DataFrame(note_rows)
+
+    # Sheet 3: 笔记正文（完整 desc）
+    body_rows = []
+    for i, n in enumerate(notes, 1):
+        nid = n.get("note_id") or n.get("id") or ""
+        d = details.get(nid) or {}
+        body_rows.append({
+            "序号": i,
+            "笔记ID": nid,
+            "标题": d.get("title") or n.get("display_title", ""),
+            "完整正文": d.get("desc", ""),
+            "话题标签": " | ".join(
+                (t.get("name") if isinstance(t, dict) else str(t))
+                for t in (d.get("tag_list") or [])
+            ),
+            "@用户": " | ".join(
+                (a.get("nickname") if isinstance(a, dict) else str(a))
+                for a in (d.get("at_user_list") or [])
+            ),
+        })
+    body_df = pd.DataFrame(body_rows)
+
+    # Sheet 4: 图片汇总（一图一行）
+    img_rows = []
+    for n in notes:
+        nid = n.get("note_id") or n.get("id") or ""
+        d = details.get(nid) or {}
+        title = d.get("title") or n.get("display_title", "")
+        for j, im in enumerate(d.get("image_list") or [], 1):
+            url = ""
+            if isinstance(im, dict):
+                url = im.get("url_default") or im.get("urlDefault") or im.get("url") or ""
+            elif isinstance(im, str):
+                url = im
+            img_rows.append({
+                "笔记ID": nid, "笔记标题": title, "类型": "图片",
+                "序号": j, "URL": url,
+            })
+        for j, v in enumerate(d.get("video_urls") or [], 1):
+            img_rows.append({
+                "笔记ID": nid, "笔记标题": title, "类型": f"视频-{v.get('quality','')}",
+                "序号": j, "URL": v.get("url", ""),
+            })
+    img_df = pd.DataFrame(img_rows) if img_rows else pd.DataFrame(columns=["笔记ID","笔记标题","类型","序号","URL"])
+
+    # Sheet 5: 全部评论（含子评论，跨笔记汇总）
+    cmt_rows = []
+    for n in notes:
+        nid = n.get("note_id") or n.get("id") or ""
+        title = (details.get(nid) or {}).get("title") or n.get("display_title", "")
+        cms = (comments_map.get(nid) or {}).get("comments") or []
+        for c in cms:
+            u = c.get("user") or {}
+            pics = " | ".join(
+                (p.get("url_default") or p.get("url", ""))
+                for p in (c.get("pictures") or [])
+            )
+            sub_n = c.get("sub_comment_count") or len(c.get("sub_comments") or [])
+            cmt_rows.append({
+                "笔记ID": nid, "笔记标题": title,
+                "评论ID": c.get("id", ""), "父评论ID": "", "层级": "根评论",
+                "用户昵称": u.get("nickname", ""), "用户ID": u.get("user_id", ""),
+                "评论内容": c.get("content", ""),
+                "点赞数": c.get("like_count", 0),
+                "评论时间": _ts(c.get("create_time")),
+                "IP归属": c.get("ip_location", ""),
+                "子评论数": sub_n, "图片附件": pics,
+            })
+            for sc in c.get("sub_comments") or []:
+                su = sc.get("user") or {}
+                cmt_rows.append({
+                    "笔记ID": nid, "笔记标题": title,
+                    "评论ID": sc.get("id", ""), "父评论ID": c.get("id", ""),
+                    "层级": "└─ 回复",
+                    "用户昵称": su.get("nickname", ""), "用户ID": su.get("user_id", ""),
+                    "评论内容": sc.get("content", ""),
+                    "点赞数": sc.get("like_count", 0),
+                    "评论时间": _ts(sc.get("create_time")),
+                    "IP归属": sc.get("ip_location", ""),
+                    "子评论数": 0, "图片附件": "",
+                })
+    cmt_df = pd.DataFrame(cmt_rows) if cmt_rows else pd.DataFrame(
+        columns=["笔记ID","笔记标题","评论ID","父评论ID","层级","用户昵称","用户ID","评论内容","点赞数","评论时间","IP归属","子评论数","图片附件"])
+
+    return {
+        "概览": overview,
+        "笔记列表": notes_df,
+        "笔记正文": body_df,
+        "图片视频": img_df,
+        "全部评论": cmt_df,
+    }
+
+
 def export(name: str, path: Path) -> tuple[bytes, str]:
     """Return (xlsx bytes, suggested filename) for a saved JSON file."""
     data = json.loads(path.read_text(encoding="utf-8"))
@@ -182,6 +334,14 @@ def export(name: str, path: Path) -> tuple[bytes, str]:
             sheet = "评论"
             df.to_excel(w, index=False, sheet_name=sheet)
             _autosize(w, sheet, df)
+        return buf.getvalue(), f"{base}.xlsx"
+
+    if name.startswith("bundle_"):
+        sheets = _bundle_sheets(data)
+        with pd.ExcelWriter(buf, engine="openpyxl") as w:
+            for sn, df in sheets.items():
+                df.to_excel(w, index=False, sheet_name=sn[:31])
+                _autosize(w, sn[:31], df)
         return buf.getvalue(), f"{base}.xlsx"
 
     if name.startswith("notes_top5_"):
