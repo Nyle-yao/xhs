@@ -484,6 +484,59 @@ def get_output(name: str):
     return FileResponse(str(fp), media_type="application/json", filename=name)
 
 
+def _records_module():
+    try:
+        from . import records as _rec  # type: ignore
+        return _rec
+    except Exception:
+        import importlib.util as _u, sys as _s
+        from pathlib import Path as _P
+        spec = _u.spec_from_file_location("xhs_records", _P(__file__).parent / "records.py")
+        _rec = _u.module_from_spec(spec); _s.modules["xhs_records"] = _rec
+        spec.loader.exec_module(_rec)  # type: ignore
+        return _rec
+
+
+@app.get("/api/v1/records")
+def list_records() -> dict[str, Any]:
+    """List saved scrape records (auto-backfill from existing JSON files)."""
+    from pathlib import Path as _P
+    rec = _records_module()
+    items = rec.list_records()
+    known = {r.get("id") for r in items}
+    outdir = _P(__file__).resolve().parent / "outputs"
+    backfilled = 0
+    for fp in outdir.glob("*.json"):
+        if fp.name.startswith("_"): continue
+        if fp.stem in known: continue
+        try:
+            data = _json.loads(fp.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        try:
+            if fp.name.startswith("user_posted_"):
+                rec.upsert_user_posts(fp, data, {})
+                backfilled += 1
+            elif fp.name.startswith("note_"):
+                rec.upsert_note(fp, data, {})
+                backfilled += 1
+            elif fp.name.startswith("comments_"):
+                rec.upsert_comments(fp, data, {})
+                backfilled += 1
+        except Exception:
+            continue
+    if backfilled:
+        items = rec.list_records()
+    return {"ok": True, "count": len(items), "backfilled": backfilled, "records": items}
+
+
+@app.delete("/api/v1/records/{rec_id}")
+def delete_record(rec_id: str, with_file: bool = False) -> dict[str, Any]:
+    rec = _records_module()
+    ok = rec.delete_record(rec_id, also_file=with_file)
+    return {"ok": ok}
+
+
 @app.get("/api/v1/view/{name}")
 def view_output(name: str):
     """Render saved JSON as a styled, self-contained HTML page."""
@@ -1133,6 +1186,14 @@ def raw_user_posted_all(req: UserPostedAllReq) -> dict[str, Any]:
                 fp = outdir / f"user_posted_{user_id}_{ts}.json"
                 fp.write_text(_json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
                 result["saved_to"] = str(fp)
+                try:
+                    from . import records as _rec  # type: ignore
+                except Exception:
+                    import importlib.util as _u, sys as _s
+                    spec = _u.spec_from_file_location("xhs_records", _P(__file__).parent / "records.py")
+                    _rec = _u.module_from_spec(spec); _s.modules["xhs_records"] = _rec
+                    spec.loader.exec_module(_rec)  # type: ignore
+                result["record"] = _rec.upsert_user_posts(fp, result, req.model_dump())
             return result
     return service.run_pw(_do)
 
@@ -1235,6 +1296,14 @@ def raw_note_detail(req: NoteDetailReq) -> dict[str, Any]:
                 fp = outdir / f"note_{note_id}_{ts}.json"
                 fp.write_text(_json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
                 result["saved_to"] = str(fp)
+                try:
+                    from . import records as _rec  # type: ignore
+                except Exception:
+                    import importlib.util as _u, sys as _s
+                    spec = _u.spec_from_file_location("xhs_records", _P(__file__).parent / "records.py")
+                    _rec = _u.module_from_spec(spec); _s.modules["xhs_records"] = _rec
+                    spec.loader.exec_module(_rec)  # type: ignore
+                result["record"] = _rec.upsert_note(fp, result, req.model_dump())
             return result
     return service.run_pw(_do)
 
@@ -1450,6 +1519,14 @@ def raw_comments(req: CommentsReq) -> dict[str, Any]:
                 fp = outdir / f"comments_{note_id}_{ts}.json"
                 fp.write_text(_json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
                 result["saved_to"] = str(fp)
+                try:
+                    from . import records as _rec  # type: ignore
+                except Exception:
+                    import importlib.util as _u, sys as _s
+                    spec = _u.spec_from_file_location("xhs_records", _P(__file__).parent / "records.py")
+                    _rec = _u.module_from_spec(spec); _s.modules["xhs_records"] = _rec
+                    spec.loader.exec_module(_rec)  # type: ignore
+                result["record"] = _rec.upsert_comments(fp, result, req.model_dump())
             return result
     return service.run_pw(_do)
 
