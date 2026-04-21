@@ -71,6 +71,57 @@
         <span class="pill ok">支持采集后识别分析</span>
         <span class="pill bad">不自动线上追平</span>
       </div>
+
+      <div class="card" id="v2card" style="border:2px solid #16a34a">
+        <h2 style="color:#16a34a">⚡ 稳定链路 (v2) — 推荐使用</h2>
+        <div class="muted" style="font-size:12px;margin-bottom:8px">
+          直接用浏览器自带签名调小红书 Web API + 解析页面 SSR 数据，全程仿真人节奏，已实测 100% 可用。
+        </div>
+
+        <div style="margin-bottom:10px">
+          <strong>① 状态：</strong>
+          <span id="v2Login" style="margin-left:6px">未检测</span>
+          <button class="light" style="margin-left:8px" onclick="v2Status()">刷新登录状态</button>
+          <span style="margin-left:14px;color:#666">如未登录请回到上方"导入 Cookie"导入。</span>
+        </div>
+
+        <div style="margin-bottom:10px;padding:8px;background:#f6fbf7;border-radius:6px">
+          <div><strong>② 抓取用户全部笔记</strong></div>
+          <input id="v2UserUrl" style="width:100%;font-family:monospace;font-size:12px;margin-top:4px" placeholder="https://www.xiaohongshu.com/user/profile/<id>?xsec_token=...&xsec_source=pc_search" />
+          <div class="actions" style="margin-top:6px">
+            <label style="font-size:12px">最多翻页 <input id="v2MaxPages" type="number" min="1" max="100" value="50" style="width:60px"/></label>
+            <button class="secondary" id="v2FetchAllBtn" onclick="v2FetchAll()">开始抓取</button>
+            <span id="v2FetchAllStatus" class="muted" style="font-size:12px"></span>
+          </div>
+        </div>
+
+        <div id="v2NotesPanel" style="display:none;margin-bottom:10px">
+          <div><strong>③ 笔记列表</strong> <span id="v2NotesMeta" class="muted" style="font-size:12px"></span></div>
+          <div style="max-height:340px;overflow:auto;border:1px solid #ddd;border-radius:6px;margin-top:6px">
+            <table id="v2NotesTable" style="width:100%;border-collapse:collapse;font-size:12px">
+              <thead style="position:sticky;top:0;background:#f3f4f6">
+                <tr>
+                  <th style="padding:6px;text-align:left">#</th>
+                  <th style="padding:6px;text-align:left">标题</th>
+                  <th style="padding:6px;text-align:left">类型</th>
+                  <th style="padding:6px;text-align:right">♡赞</th>
+                  <th style="padding:6px;text-align:left">操作</th>
+                </tr>
+              </thead>
+              <tbody id="v2NotesBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="margin-bottom:10px;padding:8px;background:#f6fbf7;border-radius:6px">
+          <div><strong>④ 已保存的 JSON 文件</strong>
+            <button class="light" style="float:right" onclick="v2Refresh()">刷新</button>
+          </div>
+          <div id="v2Files" style="font-size:12px;margin-top:6px">点"刷新"加载列表...</div>
+        </div>
+
+        <pre id="v2Out" style="max-height:360px;overflow:auto;background:#fff;border:1px solid #eee;padding:6px;font-size:11px"></pre>
+      </div>
     </section>
 
     <section class="grid">
@@ -471,6 +522,107 @@ async function analyzeLatest() {
 function downloadAnalysis() {
   window.open(API + '/api/v1/simple/analysis.xlsx', '_blank');
 }
+
+// ===== v2 stable pipeline =====
+let v2Notes = [];
+function v2Esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function v2Out(obj){ document.getElementById('v2Out').textContent = typeof obj==='string'?obj:JSON.stringify(obj,null,2); }
+async function v2Status(){
+  try {
+    const r = await fetch(API + '/api/v1/auth/login/debug?_=' + Date.now());
+    const d = await r.json();
+    const ok = d.logged_in || (d.cookies && d.cookies.web_session);
+    document.getElementById('v2Login').innerHTML = ok
+      ? '<span style="color:#16a34a;font-weight:600">✅ 已登录</span> '+(d.user_name||d.user_id||'')
+      : '<span style="color:#dc2626;font-weight:600">❌ 未登录</span>';
+  } catch(e){ document.getElementById('v2Login').textContent = '检测失败：'+e; }
+}
+async function v2FetchAll(){
+  const url = document.getElementById('v2UserUrl').value.trim();
+  if(!url){ alert('请输入用户主页链接'); return; }
+  const maxPages = parseInt(document.getElementById('v2MaxPages').value)||50;
+  const btn = document.getElementById('v2FetchAllBtn');
+  const stat = document.getElementById('v2FetchAllStatus');
+  btn.disabled = true; stat.textContent = '抓取中（仿真人节奏，每页约 5 秒）...';
+  const t0 = Date.now();
+  try{
+    const r = await fetch(API + '/api/v1/raw/user-posted-all', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({user_url_or_id:url, max_pages:maxPages, save:true})
+    });
+    const d = await r.json();
+    const dt = ((Date.now()-t0)/1000).toFixed(1);
+    if(!d.ok){ stat.innerHTML = '<span style="color:#dc2626">失败：'+v2Esc(d.error||'')+'</span>'; v2Out(d); return; }
+    v2Notes = d.notes || [];
+    stat.innerHTML = `<span style="color:#16a34a">✅ ${dt}s, ${d.pages} 页, ${d.total_notes} 篇</span>`;
+    document.getElementById('v2NotesMeta').textContent =
+      `共 ${d.total_notes} 篇 / has_more=${d.has_more} / 已保存：${d.saved_to||'-'}`;
+    const body = document.getElementById('v2NotesBody');
+    body.innerHTML = v2Notes.map((n,i)=>{
+      const likes = (n.interact_info||{}).liked_count || 0;
+      const title = n.display_title || '(无标题)';
+      const tok = encodeURIComponent(n.xsec_token||'');
+      const id = n.note_id;
+      return `<tr style="border-top:1px solid #eee">
+        <td style="padding:5px 6px">${i+1}</td>
+        <td style="padding:5px 6px">${v2Esc(title)}</td>
+        <td style="padding:5px 6px">${v2Esc(n.type||'-')}</td>
+        <td style="padding:5px 6px;text-align:right">${likes}</td>
+        <td style="padding:5px 6px">
+          <button class="light" style="font-size:11px;padding:2px 6px" onclick="v2Detail('${id}','${tok}')">详情</button>
+          <button class="light" style="font-size:11px;padding:2px 6px" onclick="v2Comments('${id}','${tok}')">评论(20)</button>
+        </td>
+      </tr>`;
+    }).join('');
+    document.getElementById('v2NotesPanel').style.display='block';
+    v2Refresh();
+  } catch(e){ stat.innerHTML='<span style="color:#dc2626">异常：'+e+'</span>'; }
+  finally { btn.disabled=false; }
+}
+async function v2Detail(id, tokEnc){
+  const tok = decodeURIComponent(tokEnc);
+  v2Out('正在抓取笔记详情 '+id+' ...');
+  try{
+    const r = await fetch(API + '/api/v1/raw/note-detail', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({note_id:id, xsec_token:tok, xsec_source:'pc_user', save:true})
+    });
+    v2Out(await r.json()); v2Refresh();
+  } catch(e){ v2Out('异常：'+e); }
+}
+async function v2Comments(id, tokEnc){
+  const tok = decodeURIComponent(tokEnc);
+  v2Out('正在抓取评论 '+id+' (前 20 条, ~30s) ...');
+  try{
+    const r = await fetch(API + '/api/v1/raw/comments', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({note_id:id, xsec_token:tok, xsec_source:'pc_user', max_comments:20, max_pages:6, save:true})
+    });
+    v2Out(await r.json()); v2Refresh();
+  } catch(e){ v2Out('异常：'+e); }
+}
+async function v2Refresh(){
+  try{
+    const r = await fetch(API + '/api/v1/outputs?_=' + Date.now());
+    const d = await r.json();
+    const box = document.getElementById('v2Files');
+    if(!d.files || !d.files.length){ box.innerHTML='<i class="muted">还没有保存的文件</i>'; return; }
+    box.innerHTML = '<div style="max-height:200px;overflow:auto"><table style="width:100%;font-size:12px;border-collapse:collapse">'
+      + '<thead><tr style="background:#f3f4f6"><th style="padding:4px;text-align:left">类型</th><th style="padding:4px;text-align:left">文件名</th><th style="padding:4px;text-align:right">大小</th><th style="padding:4px;text-align:left">操作</th></tr></thead><tbody>'
+      + d.files.map(f=>{
+          const kind = ({user_posts:'📋全部笔记', comments:'💬评论', note:'📝笔记详情', notes_top5:'⭐前5'}[f.kind]) || f.kind;
+          const sz = f.size>1024 ? (f.size/1024).toFixed(1)+'KB' : f.size+'B';
+          const url = API + '/api/v1/outputs/' + encodeURIComponent(f.name);
+          return `<tr style="border-top:1px solid #eee">
+            <td style="padding:4px">${kind}</td>
+            <td style="padding:4px;font-family:monospace;font-size:11px">${v2Esc(f.name)}</td>
+            <td style="padding:4px;text-align:right">${sz}</td>
+            <td style="padding:4px"><a href="${url}" target="_blank">查看</a> · <a href="${url}" download>下载</a></td>
+          </tr>`;
+        }).join('') + '</tbody></table></div>';
+  } catch(e){ document.getElementById('v2Files').textContent='加载失败：'+e; }
+}
+document.addEventListener('DOMContentLoaded', ()=>{ v2Status(); v2Refresh(); });
 </script>
 </body>
 </html>

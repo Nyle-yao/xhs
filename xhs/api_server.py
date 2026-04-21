@@ -441,6 +441,49 @@ def note_export_options() -> dict[str, Any]:
     }
 
 
+@app.get("/api/v1/outputs")
+def list_outputs() -> dict[str, Any]:
+    """List all saved JSON files under xhs/outputs/, newest first."""
+    from pathlib import Path as _P
+    outdir = _P(__file__).resolve().parent / "outputs"
+    outdir.mkdir(parents=True, exist_ok=True)
+    items = []
+    for fp in outdir.glob("*.json"):
+        try:
+            st = fp.stat()
+            kind = (
+                "user_posts" if fp.name.startswith("user_posted_") else
+                "comments"   if fp.name.startswith("comments_")    else
+                "note"       if fp.name.startswith("note_")        else
+                "notes_top5" if fp.name.startswith("notes_top5_")  else
+                "other"
+            )
+            items.append({
+                "name": fp.name,
+                "size": st.st_size,
+                "mtime": int(st.st_mtime),
+                "kind": kind,
+            })
+        except Exception:
+            pass
+    items.sort(key=lambda x: x["mtime"], reverse=True)
+    return {"ok": True, "count": len(items), "files": items}
+
+
+@app.get("/api/v1/outputs/{name}")
+def get_output(name: str):
+    from pathlib import Path as _P
+    from fastapi.responses import FileResponse
+    from fastapi import HTTPException
+    if "/" in name or ".." in name:
+        raise HTTPException(status_code=400, detail="invalid name")
+    outdir = _P(__file__).resolve().parent / "outputs"
+    fp = outdir / name
+    if not fp.exists() or not fp.is_file():
+        raise HTTPException(status_code=404, detail="not found")
+    return FileResponse(str(fp), media_type="application/json", filename=name)
+
+
 @app.get("/api/v1/health")
 def health() -> dict[str, Any]:
     return {
