@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>小红书爬取工具</title>
+  <style>
+    :root {
+      --bg:#f6f3ee; --card:#fffdf8; --text:#172033; --muted:#667085;
+      --line:#e7dccb; --accent:#9a3412; --accent2:#2563eb; --ok:#166534; --bad:#991b1b;
+      --soft:#fff7ed; --shadow:0 18px 42px rgba(120,53,15,.08);
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:"PingFang SC","Microsoft YaHei",sans-serif; color:var(--text); background:linear-gradient(145deg,#fff7ed 0%,#f8fafc 48%,#eef2ff 100%); }
+    .wrap { max-width:1080px; margin:0 auto; padding:24px 18px 36px; }
+    .card { background:rgba(255,253,248,.94); border:1px solid var(--line); border-radius:20px; padding:20px; margin-bottom:16px; box-shadow:var(--shadow); }
+    h1 { margin:0 0 8px; font-size:30px; letter-spacing:.4px; }
+    h2 { margin:0 0 12px; font-size:18px; }
+    .muted { color:var(--muted); font-size:13px; line-height:1.75; }
+    .nav { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+    .nav a { text-decoration:none; color:#1f2937; background:#fff; border:1px solid #cbd5e1; border-radius:999px; padding:8px 13px; font-size:13px; }
+    .nav a.on { color:#fff; background:var(--accent); border-color:var(--accent); }
+    .grid { display:grid; grid-template-columns:1.1fr .9fr; gap:16px; align-items:start; }
+    textarea { width:100%; min-height:210px; border:1px solid #cbd5e1; border-radius:14px; padding:13px; font-size:14px; line-height:1.6; outline:none; resize:vertical; background:#fff; }
+    textarea:focus, input:focus, select:focus { border-color:var(--accent2); box-shadow:0 0 0 3px rgba(37,99,235,.12); }
+    .row { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:12px 0; }
+    label { display:block; font-size:13px; color:#334155; margin-bottom:6px; }
+    input, select { width:100%; border:1px solid #cbd5e1; border-radius:12px; padding:10px 11px; background:#fff; font-size:14px; }
+    .check { display:flex; gap:8px; align-items:center; margin-top:8px; font-size:14px; }
+    .check input { width:auto; }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+    button { border:0; border-radius:12px; padding:11px 14px; font-size:14px; font-weight:700; cursor:pointer; color:#fff; background:var(--accent); }
+    button.secondary { background:var(--accent2); }
+    button.light { color:#172033; background:#fff; border:1px solid #cbd5e1; }
+    button:disabled { opacity:.45; cursor:not-allowed; }
+    .status { white-space:pre-wrap; background:#111827; color:#e5e7eb; border-radius:14px; padding:13px; min-height:132px; line-height:1.65; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; }
+    .progressBox { border:1px solid var(--line); background:#fff; border-radius:16px; padding:13px; margin-bottom:12px; }
+    .progressTitle { display:flex; justify-content:space-between; gap:10px; font-size:13px; color:#334155; margin:8px 0 6px; }
+    .bar { height:10px; border-radius:999px; background:#e5e7eb; overflow:hidden; }
+    .bar i { display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--accent),#fb923c); transition:width .35s ease; }
+    .bar.blue i { background:linear-gradient(90deg,var(--accent2),#60a5fa); }
+    .events { margin-top:10px; max-height:112px; overflow:auto; border-top:1px solid var(--line); padding-top:8px; color:var(--muted); font-size:12px; line-height:1.55; }
+    .pill { display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:5px 10px; font-size:12px; background:#ffedd5; color:var(--accent); margin:3px 5px 3px 0; }
+    .pill.ok { background:#dcfce7; color:var(--ok); }
+    .pill.bad { background:#fee2e2; color:var(--bad); }
+    .result { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:12px; }
+    .kpi { background:#fff; border:1px solid var(--line); border-radius:14px; padding:12px; }
+    .kpi b { display:block; font-size:22px; margin-top:5px; }
+    .export { display:flex; gap:10px; align-items:end; flex-wrap:wrap; margin-top:14px; }
+    .export > div { min-width:220px; }
+    .note { background:var(--soft); border:1px solid #fed7aa; border-radius:14px; padding:12px; margin-top:12px; }
+    ol { margin:8px 0 0 20px; padding:0; line-height:1.8; }
+    @media (max-width:860px) { .grid,.row,.result { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <h1>小红书爬取工具（本地测试版）</h1>
+      <div class="muted">用途：验证并执行小红书博主采集。建议一次粘贴 5-20 个博主链接；系统会自动按小批次顺延、批次间冷却、遇到风控自动延长等待。</div>
+      <div class="nav">
+        <a href="/" onclick="if(location.protocol==='file:'){this.href='./看板_核心版_20260312_20260409.html'}">核心看板</a>
+        <a href="/quickstart" onclick="if(location.protocol==='file:'){this.href='./看板_新手导航.html'}">新手导航</a>
+        <a class="on" href="/xhs-crawler" onclick="if(location.protocol==='file:'){this.href='./看板_小红书任务控制台.html'}">小红书任务</a>
+      </div>
+      <div style="margin-top:10px">
+        <span class="pill">页面更新时间：2026-04-21 15:45:00</span>
+        <span class="pill ok">独立算法包</span>
+        <span class="pill ok">已支持图片型评论保留</span>
+        <span class="pill ok">支持多链接自动分批</span>
+        <span class="pill ok">支持采集后识别分析</span>
+        <span class="pill bad">不自动线上追平</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>1. 输入博主链接</h2>
+        <textarea id="links" placeholder="每行一个小红书博主主页链接，例如：https://www.xiaohongshu.com/user/profile/xxxxxx
+
+建议一次 5-20 个；系统会自动分批顺延。"></textarea>
+        <div class="row">
+          <div>
+            <label>每个博主最多抓取笔记数</label>
+            <input id="maxNotes" type="number" min="1" max="80" value="30" />
+          </div>
+          <div>
+            <label>每篇笔记最多抓评论数</label>
+            <input id="maxComments" type="number" min="5" max="300" value="40" />
+          </div>
+          <div>
+            <label>评论开关</label>
+            <div class="check"><input id="includeComments" type="checkbox" checked /> <span>抓评论（含博主本人评论识别、评论图片链接）</span></div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>每批博主数（建议2）</label>
+            <input id="batchSize" type="number" min="1" max="5" value="2" />
+          </div>
+          <div>
+            <label>批次冷却秒数（建议180）</label>
+            <input id="cooldownSec" type="number" min="0" max="3600" value="180" />
+          </div>
+          <div>
+            <label>风控冷却秒数（建议900）</label>
+            <input id="riskCooldownSec" type="number" min="0" max="7200" value="900" />
+          </div>
+        </div>
+        <div class="check"><input id="skipLoginCheck" type="checkbox" checked /> <span>我已在弹出的 Chromium 里手动登录，爬取时跳过登录检测</span></div>
+        <div class="actions">
+          <button class="light" onclick="healthCheck()">检测本地服务</button>
+          <button class="secondary" onclick="openLoginQR()">打开登录页/获取二维码</button>
+          <button class="secondary" onclick="loginCheck()">检测登录</button>
+          <button class="light" onclick="loginDebug()">诊断登录状态</button>
+          <button id="crawlBtn" onclick="crawl()">开始爬取</button>
+          <button class="light" onclick="captureCurrentPageComments()">从当前打开笔记抓评论</button>
+          <button class="secondary" onclick="analyzeLatest()">识别分析</button>
+        </div>
+        <div class="note muted">先点“打开登录页/获取二维码”，下方会显示小红书登录页二维码（每 4 秒自动刷新）；用手机小红书 App 扫码登录后，再点“检测登录”。登录成功后再点“开始爬取”。</div>
+        <div id="qrBox" style="margin-top:12px;display:none;border:1px solid #ddd;padding:8px;border-radius:6px;background:#fafafa">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <strong>登录页快照（每 4 秒刷新）</strong>
+            <button class="light" onclick="stopQR()">停止刷新</button>
+          </div>
+          <img id="qrImg" alt="login page" style="max-width:100%;height:auto;border:1px solid #eee"/>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>2. 运行状态</h2>
+        <div class="progressBox">
+          <div class="progressTitle"><b id="stageName">等待操作</b><span id="stageTime">未开始</span></div>
+          <div class="progressTitle"><span>爬取进度</span><span id="crawlPct">0%</span></div>
+          <div class="bar"><i id="crawlBar"></i></div>
+          <div class="progressTitle"><span>分析/导出准备进度</span><span id="analysisPct">0%</span></div>
+          <div class="bar blue"><i id="analysisBar"></i></div>
+          <div id="events" class="events">暂无进度。</div>
+        </div>
+        <div id="status" class="status">等待操作。
+
+如果提示无法连接，请先启动本地接口服务：
+cd /Users/yaoruanxingchen/c/xhs_task_dashboard
+XHS_HEADLESS=false python3 -m uvicorn api_server:app --host 127.0.0.1 --port 8790</div>
+        <div id="result" class="result"></div>
+        <div class="export">
+          <div>
+            <label>选择导出表格</label>
+            <select id="table">
+              <option value="all">全部表：博主+笔记+评论+失败记录</option>
+              <option value="bloggers">博主表</option>
+              <option value="notes">笔记表</option>
+              <option value="comments">评论表</option>
+              <option value="failed">失败记录</option>
+            </select>
+          </div>
+          <button class="secondary" onclick="downloadExcel()">导出 Excel</button>
+          <button class="light" onclick="downloadAnalysis()">导出识别分析表</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>3. 当前测试规则</h2>
+      <ol class="muted">
+        <li>只拿两个博主做测算，避免一次性全量跑导致风控、闪退、页面加载失败。</li>
+        <li>先确认“博主信息、笔记正文、多图图片、评论区、博主本人评论、评论图片链接”能稳定进入导出表。</li>
+        <li>最新修复：评论图片会在文字过滤前先识别，纯图片评论或弱文字图片评论不会因为文字太少被直接丢弃；若遇到小红书“访问频繁 300013”，需先冷却后再测。</li>
+        <li>确认算法可用后，再把结果接入本地小红书看板。</li>
+        <li>本地看板确认可用后，再由你确认是否追平到线上。</li>
+        <li>“识别分析”会读取最近一次爬取结果，生成基金/化名/广告信号/质量诊断分析表；原始采集表不会被覆盖。</li>
+      </ol>
+    </section>
+  </div>
+
+<script>
+const API = '';
+let busy = false;
+let progressTimer = null;
+function setStatus(txt) { document.getElementById('status').textContent = txt; }
+function appendStatus(txt) { document.getElementById('status').textContent += '\n' + txt; }
+function parseLinks() {
+  return document.getElementById('links').value.split(/\n|\s+/).map(x=>x.trim()).filter(Boolean);
+}
+function renderCounts(counts) {
+  const labels = {bloggers:'博主', notes:'笔记', comments:'评论', failed:'失败'};
+  document.getElementById('result').innerHTML = Object.entries(labels).map(([k,v]) => `<div class="kpi"><span>${v}</span><b>${(counts&&counts[k])||0}</b></div>`).join('');
+}
+function friendlyError(j) {
+  if (!j) return '未知错误';
+  if (Array.isArray(j.detail)) {
+    return j.detail.map(x => `${(x.loc || []).join('.')}：${x.msg || JSON.stringify(x)}`).join('\n');
+  }
+  if (typeof j.detail === 'string') return j.detail;
+  return j.message || JSON.stringify(j);
+}
+function renderProgress(p) {
+  if (!p) return;
+  const crawl = Math.max(0, Math.min(100, Number(p.crawl_percent || 0)));
+  const analysis = Math.max(0, Math.min(100, Number(p.analysis_percent || 0)));
+  document.getElementById('stageName').textContent = `${p.stage || '等待操作'}｜${p.message || ''}`;
+  document.getElementById('stageTime').textContent = p.updated_at || '';
+  document.getElementById('crawlPct').textContent = crawl + '%';
+  document.getElementById('analysisPct').textContent = analysis + '%';
+  document.getElementById('crawlBar').style.width = crawl + '%';
+  document.getElementById('analysisBar').style.width = analysis + '%';
+  const counts = p.counts || {};
+  renderCounts(counts);
+  const events = (p.events || []).slice().reverse();
+  const detail = [
+    `当前博主：${p.current_blogger_index || 0}/${p.total_bloggers || 0} ${p.current_blogger || ''}`,
+    `当前笔记：${p.current_note_index || 0}/${p.total_notes || 0} ${p.current_note || ''}`,
+    `累计：博主 ${counts.bloggers || 0}，笔记 ${counts.notes || 0}，评论 ${counts.comments || 0}，失败 ${counts.failed || 0}`,
+    ...events
+  ];
+  document.getElementById('events').innerHTML = detail.map(x => `<div>${String(x).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}</div>`).join('');
+}
+async function pollProgress() {
+  try {
+    const r = await fetch(API + '/api/v1/simple/progress?_=' + Date.now());
+    const j = await r.json();
+    if (j.ok) renderProgress(j.data);
+    if (j.ok && !j.data.running && progressTimer) {
+      clearInterval(progressTimer);
+      progressTimer = null;
+    }
+  } catch(e) {}
+}
+function startProgressPolling() {
+  if (progressTimer) clearInterval(progressTimer);
+  pollProgress();
+  progressTimer = setInterval(pollProgress, 1000);
+}
+async function healthCheck() {
+  try {
+    setStatus('正在检测本地接口服务...');
+    const r = await fetch(API + '/api/v1/health');
+    const j = await r.json();
+    if (!j.ok) throw new Error(JSON.stringify(j));
+    setStatus(`本地接口正常。
+服务：${j.service}
+时间：${j.time}
+浏览器模式：${j.headless ? '无头' : '可扫码/可见'}
+登录缓存目录：${j.profile_dir}`);
+    pollProgress();
+  } catch(e) {
+    setStatus(`本地接口连接失败。请先在终端启动：
+cd /Users/yaoruanxingchen/c/xhs_task_dashboard
+XHS_HEADLESS=false python3 -m uvicorn api_server:app --host 127.0.0.1 --port 8790
+
+错误：${e.message}`);
+  }
+}
+let qrTimer = null;
+async function openLoginQR() {
+  try {
+    setStatus('正在启动浏览器并打开小红书登录页（首次约需 10-20 秒）...');
+    const r = await fetch(API + '/api/v1/auth/login/open', {method:'POST'});
+    const j = await r.json();
+    setStatus(j.message || JSON.stringify(j));
+    document.getElementById('qrBox').style.display = 'block';
+    const refresh = () => {
+      const img = document.getElementById('qrImg');
+      img.src = API + '/api/v1/auth/login/qr?_=' + Date.now();
+    };
+    refresh();
+    if (qrTimer) clearInterval(qrTimer);
+    qrTimer = setInterval(refresh, 4000);
+  } catch(e) { setStatus('打开登录页失败：' + e.message); }
+}
+function stopQR() { if (qrTimer) { clearInterval(qrTimer); qrTimer = null; } }
+async function loginCheck() {
+  try {
+    setStatus('正在打开/检测小红书登录状态。若弹出浏览器，请扫码登录，最多等待 180 秒...');
+    startProgressPolling();
+    const r = await fetch(API + '/api/v1/auth/login/check', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({timeout_sec:180})});
+    const j = await r.json();
+    setStatus((j.ok ? '登录检测通过：' : '登录检测未通过：') + (j.message || JSON.stringify(j)));
+  } catch(e) { setStatus('登录检测失败：' + e.message); }
+}
+async function loginDebug() {
+  try {
+    setStatus('正在诊断当前小红书登录状态...');
+    const r = await fetch(API + '/api/v1/auth/login/debug?_=' + Date.now());
+    const j = await r.json();
+    if (!r.ok || !j.ok) throw new Error(j.detail || j.message || JSON.stringify(j));
+    const d = j.data || {};
+    setStatus(`登录诊断：
+是否按已登录处理：${d.logged_in ? '是' : '否'}
+原因：${d.reason || j.message || ''}
+当前地址：${d.url || ''}
+是否出现登录入口词：${d.has_login_word ? '是' : '否'}
+是否出现登录后页面信号：${d.has_logged_in_ui ? '是' : '否'}
+Cookie 名称：${(d.cookie_names || []).join(', ')}
+页面文字预览：${d.body_preview || ''}`);
+  } catch(e) { setStatus('登录诊断失败：' + e.message); }
+}
+async function crawl() {
+  if (busy) return;
+  const links = parseLinks();
+  if (!links.length) { setStatus('请先输入博主主页链接。'); return; }
+  if (links.length > 200) { setStatus('为保护账号安全，一次最多输入 200 个博主链接。建议先用 5-20 个测试。'); return; }
+  busy = true; document.getElementById('crawlBtn').disabled = true;
+  try {
+    setStatus('正在检查本地后端服务...');
+    const health = await fetch(API + '/api/v1/health?_=' + Date.now());
+    if (!health.ok) throw new Error('本地后端服务 8790 未正常响应，请先启动接口服务。');
+    const body = {
+      blogger_links: links,
+      max_notes_per_blogger: Number(document.getElementById('maxNotes').value || 30),
+      include_comments: document.getElementById('includeComments').checked,
+      max_comments_per_note: Number(document.getElementById('maxComments').value || 40),
+      skip_login_check: document.getElementById('skipLoginCheck').checked,
+      skip_failed: true,
+      batch_size: Number(document.getElementById('batchSize').value || 2),
+      cooldown_sec: Number(document.getElementById('cooldownSec').value || 180),
+      risk_cooldown_sec: Number(document.getElementById('riskCooldownSec').value || 900)
+    };
+    setStatus(`开始爬取。请不要关闭弹出的浏览器窗口。
+${JSON.stringify(body, null, 2)}`);
+    startProgressPolling();
+    const r = await fetch(API + '/api/v1/simple/blogger-crawl', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+    const j = await r.json();
+    if (!r.ok || !j.ok) throw new Error(friendlyError(j));
+    setStatus(`${j.message}
+生成时间：${j.data.generated_at}
+现在可以选择表格并导出 Excel。`);
+    renderCounts(j.data.counts);
+    pollProgress();
+  } catch(e) { setStatus(`爬取失败：${e.message}
+
+常见原因：未扫码登录、网络过慢、小红书风控、页面长时间未加载。`); }
+  finally { busy = false; document.getElementById('crawlBtn').disabled = false; pollProgress(); }
+}
+async function captureCurrentPageComments() {
+  if (busy) return;
+  busy = true;
+  try {
+    const maxComments = Number(document.getElementById('maxComments').value || 40);
+    setStatus(`正在从当前 Chromium 打开的页面抓评论。
+请确认 Chromium 当前页面已经是目标笔记详情页，而不是主页、推荐页、登录页或风控页。
+评论上限：${maxComments}`);
+    const r = await fetch(API + '/api/v1/simple/current-page-comments?max_comments=' + encodeURIComponent(maxComments), {method:'POST'});
+    const j = await r.json();
+    if (!r.ok || !j.ok) throw new Error(friendlyError(j));
+    const d = j.data || {};
+    setStatus(`${j.message}
+当前页面：${d.page_url || ''}
+评论图片记录：${d.comment_image_rows || 0}
+现在可以在右侧选择“评论表”或“全部表”导出 Excel。`);
+    renderCounts(d.counts || {comments:0});
+  } catch(e) {
+    setStatus(`当前页面抓评论失败：${e.message}
+
+常见原因：Chromium 当前不是笔记详情页、页面未加载完、评论区未出现、登录/风控拦截。`);
+  } finally {
+    busy = false;
+  }
+}
+function downloadExcel() {
+  const table = document.getElementById('table').value || 'all';
+  window.open(API + '/api/v1/simple/export.xlsx?table=' + encodeURIComponent(table), '_blank');
+}
+async function analyzeLatest() {
+  if (busy) return;
+  busy = true;
+  try {
+    setStatus('正在识别分析最近一次爬取结果：基金名称/代码/化名、主推或对比角色、广告信号、质量诊断...');
+    const r = await fetch(API + '/api/v1/simple/analyze-latest', {method:'POST'});
+    const j = await r.json();
+    if (!r.ok || !j.ok) throw new Error(friendlyError(j));
+    const d = j.data || {};
+    setStatus(`${j.message}
+输出文件：${d.output || ''}
+博主：${d.bloggers || 0}
+笔记：${d.notes || 0}
+评论：${d.comments || 0}
+识别提及：${d.mentions || 0}
+确认基金提及：${d.confirmed_mentions || 0}
+候选基金词：${d.candidate_mentions || 0}
+基金别名库规模：${d.fund_alias_count || 0}
+
+现在可以点击“导出识别分析表”。`);
+    pollProgress();
+  } catch(e) {
+    setStatus(`识别分析失败：${e.message}
+
+常见原因：还没有完成一次爬取；或爬取结果里没有笔记/评论；或基金标签/别名库文件不可读。`);
+  } finally {
+    busy = false;
+  }
+}
+function downloadAnalysis() {
+  window.open(API + '/api/v1/simple/analysis.xlsx', '_blank');
+}
+</script>
+</body>
+</html>
