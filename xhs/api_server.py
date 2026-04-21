@@ -880,6 +880,51 @@ def cookies_import(req: CookieImportReq) -> dict[str, Any]:
         return {"ok": False, "message": f"cookie 登录失败：{e}"}
 
 
+class SpyReq(BaseModel):
+    url: str
+    wait_ms: int = 8000
+    pattern: str = "/api/sns/"
+
+
+@app.post("/api/v1/raw/spy")
+def raw_spy(req: SpyReq) -> dict[str, Any]:
+    """Navigate the page and capture all matching outgoing API requests + their headers."""
+    def _do():
+        with service.lock:
+            scraper = service.get_persistent_scraper()
+            scraper.start()
+            ctx = scraper.context
+            page = ctx.pages[0] if ctx.pages else ctx.new_page()
+            captured: list[dict[str, Any]] = []
+            def _on_request(request):
+                try:
+                    if req.pattern in request.url:
+                        captured.append({
+                            "method": request.method,
+                            "url": request.url,
+                            "headers": dict(request.headers),
+                        })
+                except Exception:
+                    pass
+            page.on("request", _on_request)
+            try:
+                page.goto(req.url, wait_until="domcontentloaded", timeout=30000)
+                page.wait_for_timeout(req.wait_ms)
+                # try to scroll to trigger lazy loaders
+                try:
+                    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                    page.wait_for_timeout(2000)
+                except Exception:
+                    pass
+            finally:
+                try:
+                    page.remove_listener("request", _on_request)
+                except Exception:
+                    pass
+            return {"ok": True, "page_url": page.url, "count": len(captured), "requests": captured}
+    return service.run_pw(_do)
+
+
 class RawEvalReq(BaseModel):
     code: str
 
@@ -999,8 +1044,13 @@ class UserPostedReq(BaseModel):
 
 @app.post("/api/v1/raw/user-posted")
 def raw_user_posted(req: UserPostedReq) -> dict[str, Any]:
-    """Convenience wrapper around /api/sns/web/v1/user_posted."""
-    from urllib.parse import urlparse, parse_qs, urlencode
+    """Navigate to a user's profile and capture the page's own user_posted XHR response.
+
+    This works around xiaohongshu's full signing scheme by letting the page itself
+    issue the request with all 6 sign headers (x-s, x-t, x-s-common, x-b3-traceid,
+    x-rap-param, x-xray-traceid) and just observing the result.
+    """
+    from urllib.parse import urlparse, parse_qs
     s = req.user_url_or_id.strip()
     user_id = s
     xsec_token = req.xsec_token
@@ -1020,17 +1070,69 @@ def raw_user_posted(req: UserPostedReq) -> dict[str, Any]:
                 xsec_source = q["xsec_source"][0]
         except Exception as e:
             return {"ok": False, "error": f"解析 URL 失败：{e}"}
-    qs = {
-        "num": req.num,
-        "cursor": req.cursor or "",
-        "user_id": user_id,
-        "image_formats": req.image_formats,
-        "xsec_source": xsec_source,
-    }
+
+    profile_url = f"https://www.xiaohongshu.com/user/profile/{user_id}"
+    qparts = []
     if xsec_token:
-        qs["xsec_token"] = xsec_token
-    url = "https://edith.xiaohongshu.com/api/sns/web/v1/user_posted?" + urlencode(qs)
-    return raw_fetch(RawFetchReq(url=url, method="GET"))
+        qparts.append(f"xsec_token={xsec_token}")
+    qparts.append(f"xsec_source={xsec_source}")
+    profile_url += "?" + "&".join(qparts)
+
+    def _do():
+        with service.lock:
+            scraper = service.get_persistent_scraper()
+            scraper.start()
+            ctx = scraper.context
+            page = ctx.pages[0] if ctx.pages else ctx.new_page()
+            captured: dict[str, Any] = {"resp": None, "all": []}
+            def _on_response(response):
+                try:
+                    if "/api/sns/web/v1/user_posted" in response.url and response.request.method == "GET":
+                        body_text = ""
+                        try: body_text = response.text()
+                        except Exception: body_text = ""
+                        captured["all"].append({"url": response.url, "status": response.status, "body": body_text[:80000]})
+                        if captured["resp"] is None:
+                            captured["resp"] = captured["all"][-1]
+                except Exception:
+                    pass
+            page.on("response", _on_response)
+            try:
+                page.goto(profile_url, wait_until="domcontentloaded", timeout=30000)
+                # wait for the API to fire and resolve
+                for _ in range(20):
+                    if captured["resp"] is not None:
+                        break
+                    page.wait_for_timeout(500)
+                # also scroll a bit in case of lazy load
+                if captured["resp"] is None:
+                    try:
+                        page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                        page.wait_for_timeout(2000)
+                    except Exception:
+                        pass
+            finally:
+                try: page.remove_listener("response", _on_response)
+                except Exception: pass
+
+            r = captured["resp"]
+            if r is None:
+                return {"ok": False, "error": "页面未触发 user_posted 请求", "page_url": page.url}
+            j = None
+            try:
+                import json as _json
+                j = _json.loads(r["body"])
+            except Exception:
+                pass
+            return {
+                "ok": bool(j and j.get("success")),
+                "status": r["status"],
+                "json": j,
+                "text": None if j else r["body"],
+                "page_url": page.url,
+                "captured_count": len(captured["all"]),
+            }
+    return service.run_pw(_do)
 
 
 @app.post("/api/v1/auth/cookies/clear")
