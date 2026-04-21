@@ -155,14 +155,26 @@
           </div>
         </div>
 
+        <div id="v2OutPanel" style="margin-bottom:10px;padding:8px;background:#fff;border:1px solid #ddd;border-radius:6px">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px">
+            <strong id="v2OutTitle">④ 抓取结果</strong>
+            <span id="v2OutMeta" class="muted" style="font-size:12px;flex:1"></span>
+            <span id="v2OutTabs" style="display:none">
+              <button class="light" id="v2OutTabViz" style="font-size:11px;padding:2px 8px" onclick="v2OutShow('viz')">🎨 可视化</button>
+              <button class="light" id="v2OutTabJson" style="font-size:11px;padding:2px 8px" onclick="v2OutShow('json')">📄 JSON 原文</button>
+              <a id="v2OutOpen" href="#" target="_blank" class="light" style="font-size:11px;padding:2px 8px;text-decoration:none">↗ 新窗口</a>
+            </span>
+          </div>
+          <iframe id="v2OutFrame" style="display:none;width:100%;height:520px;border:1px solid #eee;border-radius:4px;background:#fafafa"></iframe>
+          <pre id="v2Out" style="max-height:420px;overflow:auto;background:#fafafa;border:1px solid #eee;padding:6px;font-size:11px;margin:0;white-space:pre-wrap;word-break:break-all">点击"详情/评论/开始抓取"后，结果会自动以可视化形式展示。</pre>
+        </div>
+
         <div style="margin-bottom:10px;padding:8px;background:#f6fbf7;border-radius:6px">
-          <div><strong>④ 已保存的 JSON 文件</strong>
+          <div><strong>⑤ 已保存的 JSON 文件</strong>
             <button class="light" style="float:right" onclick="v2Refresh()">刷新</button>
           </div>
           <div id="v2Files" style="font-size:12px;margin-top:6px">点"刷新"加载列表...</div>
         </div>
-
-        <pre id="v2Out" style="max-height:360px;overflow:auto;background:#fff;border:1px solid #eee;padding:6px;font-size:11px"></pre>
       </div>
     </section>
 
@@ -568,7 +580,61 @@ function downloadAnalysis() {
 // ===== v2 stable pipeline =====
 let v2Notes = [];
 function v2Esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function v2Out(obj){ document.getElementById('v2Out').textContent = typeof obj==='string'?obj:JSON.stringify(obj,null,2); }
+let v2OutCur = null; // {file, kind, label}
+function v2OutBaseName(p){ if(!p) return ''; return String(p).split(/[\\/]/).pop(); }
+function v2OutShow(mode){
+  if(!v2OutCur){ return; }
+  const fr = document.getElementById('v2OutFrame');
+  const pre = document.getElementById('v2Out');
+  const tv = document.getElementById('v2OutTabViz');
+  const tj = document.getElementById('v2OutTabJson');
+  if(mode==='viz'){
+    fr.src = API + '/api/v1/view/' + encodeURIComponent(v2OutCur.file);
+    fr.style.display='block'; pre.style.display='none';
+    tv.classList.remove('light'); tv.classList.add('secondary');
+    tj.classList.add('light'); tj.classList.remove('secondary');
+  } else {
+    pre.textContent='载入中...';
+    fetch(API + '/api/v1/outputs/' + encodeURIComponent(v2OutCur.file))
+      .then(r=>r.text()).then(t=>{ try{ pre.textContent = JSON.stringify(JSON.parse(t),null,2);}catch{ pre.textContent=t; } });
+    fr.style.display='none'; pre.style.display='block';
+    tj.classList.remove('light'); tj.classList.add('secondary');
+    tv.classList.add('light'); tv.classList.remove('secondary');
+  }
+}
+function v2Out(obj){
+  const pre = document.getElementById('v2Out');
+  const fr = document.getElementById('v2OutFrame');
+  const tabs = document.getElementById('v2OutTabs');
+  const meta = document.getElementById('v2OutMeta');
+  const title = document.getElementById('v2OutTitle');
+  // String or non-result → fall back to plain text
+  if(typeof obj === 'string'){
+    fr.style.display='none'; pre.style.display='block'; pre.textContent = obj;
+    tabs.style.display='none'; meta.textContent=''; v2OutCur=null;
+    title.textContent='④ 抓取结果'; return;
+  }
+  // Try to detect saved file from response
+  const file = v2OutBaseName(obj && (obj.saved_to || (obj.record && obj.record.file)));
+  if(!file || !obj.ok){
+    fr.style.display='none'; pre.style.display='block';
+    pre.textContent = JSON.stringify(obj, null, 2);
+    tabs.style.display='none'; meta.textContent = obj.ok===false ? '❌ '+(obj.error||'失败') : '';
+    v2OutCur=null; title.textContent='④ 抓取结果'; return;
+  }
+  // Pick label/kind
+  let kind='', label='';
+  if(file.startsWith('user_posted_')){ kind='📋 全部笔记'; label = `${obj.total_notes||0} 篇 · pages=${obj.pages||'-'}`; }
+  else if(file.startsWith('note_')){ kind='📝 笔记详情'; const u=(obj.user||{}); label = `${u.nickname||''} · ${(obj.title||'').slice(0,30)}`; }
+  else if(file.startsWith('comments_')){ kind='💬 评论'; label = `${(obj.comments||[]).length} 条根评论`; }
+  else { kind='📄 数据'; label=file; }
+  title.textContent = '④ ' + kind;
+  meta.innerHTML = `<span style="color:#16a34a">✅ 已保存</span>　·　${v2Esc(label)}　·　<span style="font-family:monospace">${v2Esc(file)}</span>`;
+  v2OutCur = {file, kind, label};
+  document.getElementById('v2OutOpen').href = API + '/api/v1/view/' + encodeURIComponent(file);
+  tabs.style.display='inline-flex';
+  v2OutShow('viz'); // default = visualization
+}
 function v2ToggleCookieBox(){
   const box = document.getElementById('v2CookieBox');
   box.style.display = (box.style.display==='none' || !box.style.display) ? 'block' : 'none';
@@ -659,6 +725,7 @@ async function v2FetchAll(){
     const dt = ((Date.now()-t0)/1000).toFixed(1);
     if(!d.ok){ stat.innerHTML = '<span style="color:#dc2626">失败：'+v2Esc(d.error||'')+'</span>'; v2Out(d); return; }
     v2Notes = d.notes || [];
+    v2Out(d); // auto-render the saved file as visualization
     stat.innerHTML = `<span style="color:#16a34a">✅ ${dt}s, ${d.pages} 页, ${d.total_notes} 篇</span>`;
     document.getElementById('v2NotesMeta').textContent =
       `共 ${d.total_notes} 篇 / has_more=${d.has_more} / 已保存：${d.saved_to||'-'}`;
